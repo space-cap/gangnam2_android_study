@@ -21,6 +21,7 @@ fun InputField(
     placeholder: String = "",
     value: String = "",
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     Column(
@@ -39,7 +40,7 @@ fun InputField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.size(315.dp, 55.dp),
+            modifier = modifier.size(315.dp, 55.dp),
             placeholder = {
                 Text(
                     placeholder,
