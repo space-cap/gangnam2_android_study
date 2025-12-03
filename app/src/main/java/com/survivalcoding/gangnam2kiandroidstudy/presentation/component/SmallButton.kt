@@ -10,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,15 +18,15 @@ import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 
 @Composable
-fun BigButton(
+fun SmallButton(
     text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-) {
+){
     Button(
         onClick = onClick,
         modifier = modifier
-            .size(width = 315.dp, height = 60.dp),
+            .size(width = 174.dp, height = 37.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = AppColors.primary100,
@@ -38,16 +37,11 @@ fun BigButton(
             text = text,
             style = AppTextStyles.normalTextBold,
         )
-        Spacer(modifier = Modifier.width(11.dp))
-        Icon(
-            painter = painterResource(R.drawable.arrow_forward_24px),
-            contentDescription = "오른쪽 화살표"
-        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BigButtonPreview() {
-    BigButton("Button")
+fun SmallButtonPreview() {
+    SmallButton("Button")
 }

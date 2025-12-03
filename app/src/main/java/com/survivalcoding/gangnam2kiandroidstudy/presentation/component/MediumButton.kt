@@ -10,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,7 +18,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 
 @Composable
-fun BigButton(
+fun MediumButton(
     text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -27,7 +26,7 @@ fun BigButton(
     Button(
         onClick = onClick,
         modifier = modifier
-            .size(width = 315.dp, height = 60.dp),
+            .size(width = 243.dp, height = 54.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = AppColors.primary100,
@@ -48,6 +47,6 @@ fun BigButton(
 
 @Preview(showBackground = true)
 @Composable
-fun BigButtonPreview() {
-    BigButton("Button")
+fun MediumButtonPreview() {
+    MediumButton("Button")
 }
