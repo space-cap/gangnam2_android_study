@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -35,13 +36,15 @@ fun Tabs(
 ) {
     Row(
         modifier = modifier.fillMaxWidth()
-            .size(375.dp,58.dp),
+            .size(375.dp,58.dp)
+            .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
 
     ) {
         labels.take(3).forEachIndexed { index, label ->
             val isSelected = selectedIndex == index
+            // val isSelected = true
             val backgroundColor = if (isSelected) AppColors.primary100 else Color.Transparent
             val contentColor = if (isSelected) AppColors.white else AppColors.primary100
 
