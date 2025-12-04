@@ -20,7 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
+import com.survivalcoding.gangnam2kiandroidstudy.data.model.Ingredient
+import com.survivalcoding.gangnam2kiandroidstudy.data.model.IngredientAmount
+import com.survivalcoding.gangnam2kiandroidstudy.data.model.UnitType
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.BigButton
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.IngredientItem
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.InputField
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.MediumButton
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SmallButton
@@ -40,96 +44,17 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Column {
-                    BigButton(
-                        text = "Button",
-                        onClick = {
-                            println("클릭!")
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    MediumButton(
-                        text = "Button",
-                        onClick = {
-                            println("클릭!")
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    SmallButton(
-                        text = "Button",
-                        onClick = {
-                            println("클릭!")
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    val focusRequester = remember { FocusRequester() }
-                    var email by remember { mutableStateOf("") }
-
-                    LaunchedEffect(Unit) {
-                        focusRequester.requestFocus()
-                    }
-
-                    InputField(
-                        label = "Email",
-                        placeholder = "Enter your email",
-                        value = email,
-                        onValueChange = { email = it },
-                        modifier = Modifier.focusRequester(focusRequester)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    InputField(
-                        label = "Email",
-                        placeholder = "Enter your email",
-                        value = email,
-                        onValueChange = { email = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
                     var selectedIndex by remember { mutableStateOf(0) }
-                    Tabs(
-                        labels = listOf("Label1", "Label2", "Label3").toImmutableList(),
-                        selectedIndex = selectedIndex,
-                        onTabSelected = { selectedIndex = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Tabs(
-                        labels = listOf("Label1", "Label2", "Label3").toImmutableList(),
-                        selectedIndex = 1,
-                        onTabSelected = { selectedIndex = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Tabs(
-                        labels = listOf("Label1", "Label2", "Label3").toImmutableList(),
-                        selectedIndex = 2,
-                        onTabSelected = { selectedIndex = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Tabs(
-                        labels = listOf("Label1", "Label2").toImmutableList(),
-                        selectedIndex = 0,
-                        onTabSelected = { selectedIndex = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Tabs(
-                        labels = listOf("Label1", "Label2").toImmutableList(),
-                        selectedIndex = 1,
-                        onTabSelected = { selectedIndex = it }
+                    IngredientItem(
+                        ingredient = Ingredient(
+                            id = 1,
+                            image = "https://cdn.pixabay.com/photo/2017/10/06/17/17/tomato-2823826_1280.jpg",
+                            name = "Tomatos",
+                            amount = IngredientAmount(
+                                value = 500.0,
+                                unit = UnitType.GRAM
+                            )
+                        )
                     )
 
                 }

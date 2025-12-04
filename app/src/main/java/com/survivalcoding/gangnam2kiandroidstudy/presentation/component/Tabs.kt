@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,8 +48,9 @@ fun Tabs(
     }
 
     Row(
-        modifier = modifier.fillMaxWidth()
-            .size(375.dp,58.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .size(375.dp, 58.dp)
             .padding(horizontal = rowPadding),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
@@ -83,9 +85,14 @@ fun Tabs(
 @Composable
 private fun TabsPreview() {
     var selectedIndex by remember { mutableStateOf(0) }
-    Tabs(
-        labels = listOf("Label1", "Label2", "Label3", "Label4").toImmutableList(),
-        selectedIndex = selectedIndex,
-        onTabSelected = { selectedIndex = it }
-    )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Tabs(
+            labels = listOf("Label1", "Label2", "Label3", "Label4").toImmutableList(),
+            selectedIndex = selectedIndex,
+            onTabSelected = { selectedIndex = it }
+        )
+    }
 }
