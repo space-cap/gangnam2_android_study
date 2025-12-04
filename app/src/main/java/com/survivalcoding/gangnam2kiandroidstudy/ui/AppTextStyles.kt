@@ -57,6 +57,21 @@ object AppTextStyles {
         color = AppColors.black,
     )
 
+    val smallerTextRegular = TextStyle(
+        fontFamily = AppFonts.poppins,
+        fontWeight = FontWeight.Normal,
+        fontSize = 11.sp,
+        lineHeight = 11.sp,
+    )
+
+    val smallerTextSmallLabel = TextStyle(
+        fontFamily = AppFonts.poppins,
+        fontWeight = FontWeight.Normal,
+        fontSize = 8.sp,
+        lineHeight = 8.sp,
+        letterSpacing = 0.sp,
+    )
+
     val titleTextBold = TextStyle(
         fontFamily = AppFonts.poppins,
         fontWeight = FontWeight.Bold,
@@ -89,9 +104,10 @@ object AppTextStyles {
     )
     val smallTextBold = TextStyle(
         fontFamily = AppFonts.poppins,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight(600), // SemiBold
         fontSize = 14.sp,
-        lineHeight = 21.sp
+        lineHeight = 14.sp,
+        letterSpacing = 0.sp,
     )
     val smallerTextBold = TextStyle(
         fontFamily = AppFonts.poppins,
