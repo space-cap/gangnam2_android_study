@@ -1,6 +1,7 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,8 @@ fun RecipeCard(
         modifier = modifier
             .fillMaxWidth()
             .size(width = 315.dp, height = 150.dp)
-            .padding(all = 10.dp),
+            .padding(all = 10.dp)
+            .clickable(onClick = onClick),
         ) {
 
         AsyncImage(
