@@ -98,7 +98,7 @@ fun RatingDialog(
                         .width(60.dp)
                         .height(20.dp)
                         .clip(RoundedCornerShape(10))
-                        .background(AppColors.primary100)
+                        .background(AppColors.rating)
                         .clickable(
                             enabled = enabled,
                             onClick = onConfirm
