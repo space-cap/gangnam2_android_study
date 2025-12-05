@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Column {
-                    var selectedIndex by remember { mutableStateOf(0) }
+
                     IngredientItem(
                         ingredient = Ingredient(
                             id = 1,
