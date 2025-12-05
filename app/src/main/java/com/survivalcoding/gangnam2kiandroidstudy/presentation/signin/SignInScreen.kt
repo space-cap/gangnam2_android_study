@@ -62,6 +62,7 @@ fun SignInScreen() {
         InputField(
             label = "Password",
             placeholder = "Enter your password",
+            isPassword = true,
         )
 
         Spacer(modifier = Modifier.height(20.dp))
