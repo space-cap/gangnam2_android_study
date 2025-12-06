@@ -144,6 +144,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Row(
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
@@ -152,6 +153,25 @@ fun SignUpScreen(
             LeeIconBox(icon = R.drawable.social_icons_facebook)
         }
 
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                "Already have an account?",
+                style = AppTextStyles.smallerTextRegular
+            )
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            Text(
+                "Sign In",
+                style = AppTextStyles.smallerTextBold,
+                color = AppColors.primary100,
+            )
+        }
     }
 }
 
