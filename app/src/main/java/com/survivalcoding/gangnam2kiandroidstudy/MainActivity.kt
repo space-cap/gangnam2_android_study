@@ -36,6 +36,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCa
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SmallButton
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.Tabs
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.signin.SignInScreen
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.signup.SignUpScreen
 import kotlinx.collections.immutable.toImmutableList
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
             ) {
 
-                    SignInScreen()
+                SignUpScreen()
 
 
 

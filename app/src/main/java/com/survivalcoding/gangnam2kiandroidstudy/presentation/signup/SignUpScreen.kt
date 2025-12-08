@@ -162,7 +162,7 @@ fun SignUpScreen(
         ) {
             Text(
                 "Already have an account?",
-                style = AppTextStyles.smallerTextRegular
+                style = AppTextStyles.smallerTextBold
             )
             Spacer(modifier = Modifier.padding(4.dp))
 
