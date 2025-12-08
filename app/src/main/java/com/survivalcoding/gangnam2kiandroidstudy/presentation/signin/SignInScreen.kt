@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -123,7 +124,7 @@ fun SignInScreen() {
             horizontalArrangement = Arrangement.Center,
         ) {
             LeeIconBox(icon = R.drawable.social_icons_google)
-            Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             LeeIconBox(icon = R.drawable.social_icons_facebook)
         }
 
