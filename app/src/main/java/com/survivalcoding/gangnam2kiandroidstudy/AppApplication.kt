@@ -8,11 +8,11 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.todo.TodoRepositor
 
 class AppApplication : Application() {
 
-    val todoDataSource: TodoDataSource by lazy {
+    private val todoDataSource: TodoDataSource by lazy {
         TodoDataSourceImpl()
     }
 
     val todoRepository: TodoRepository by lazy {
-        TodoRepositoryImpl()
+        TodoRepositoryImpl(todoDataSource)
     }
 }
