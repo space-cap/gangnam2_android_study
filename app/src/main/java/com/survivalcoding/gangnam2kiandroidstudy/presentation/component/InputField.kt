@@ -46,7 +46,7 @@ fun InputField(
             text = label,
             color = AppColors.gray1,
             style = AppTextStyles.smallTextRegular,
-            modifier = Modifier.size(38.dp, 21.dp)
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(7.dp))
         OutlinedTextField(

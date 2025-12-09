@@ -68,6 +68,7 @@ fun SignUpScreen(
                 "Let's help you set up your account, it won't take long.",
                 style = AppTextStyles.smallerTextRegular,
                 color = AppColors.label1,
+                modifier = Modifier.width(195.dp),
             )
         }
 
@@ -103,7 +104,7 @@ fun SignUpScreen(
 
         InputField(
             label = "Confirm Password",
-            placeholder = "Confirm password",
+            placeholder = "Retype Password",
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
             isPassword = true,
