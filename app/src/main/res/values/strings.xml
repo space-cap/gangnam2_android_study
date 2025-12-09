@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Gangnam2kiAndroidStudy</string>
     <string name="title_activity_lee">LeeActivity</string>
+
+    <!-- Splash-->
+    <string name="splash_description">100K+ Premium Recipe </string>
+    <string name="splash_title">Get Cooking </string>
+    <string name="splash_subtitle">Simple way to find Tasty Recipe</string>
+    <string name="splash_button">Start Cooking</string>
+    
 </resources>

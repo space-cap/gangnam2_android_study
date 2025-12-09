@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.survivalcoding.gangnam2kiandroidstudy.presentation.screen.saveedrecipes.SavedRecipesScreen
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.screen.splash.SplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,8 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
             ) {
 
-                SavedRecipesScreen()
+                SplashScreen()
+                // SavedRecipesScreen()
 
 
             }
