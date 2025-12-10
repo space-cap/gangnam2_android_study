@@ -28,17 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.survivalcoding.gangnam2kiandroidstudy.R
+import com.survivalcoding.gangnam2kiandroidstudy.data.model.Recipe
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 import java.util.Locale
 
 @Composable
 fun RecipeCardMedium(
-    name: String,
-    imageUrl: String,
-    chef: String,
-    time: String,
-    rating: Double,
+    recipe: Recipe,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -49,8 +46,8 @@ fun RecipeCardMedium(
 
         // Background Image
         AsyncImage(
-            model = imageUrl,
-            contentDescription = name,
+            model = recipe.image,
+            contentDescription = recipe.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
         )
@@ -77,14 +74,14 @@ fun RecipeCardMedium(
                 .padding(12.dp)
         ) {
             Text(
-                text = name,
+                text = recipe.name,
                 style = AppTextStyles.smallTextBold.copy(color = AppColors.white, fontSize = 16.sp),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "By $chef",
+                text = "By ${recipe.chef}",
                 style = AppTextStyles.smallerTextRegular.copy(
                     color = AppColors.white.copy(alpha = 0.9f),
                     fontSize = 12.sp
@@ -113,10 +110,10 @@ fun RecipeCardMedium(
             Spacer(Modifier.width(4.dp))
 
             Text(
-                text = String.format(Locale.US, "%.1f", rating),
+                text = String.format(Locale.US, "%.1f", recipe.rating),
                 style = AppTextStyles.smallTextBold.copy(
                     fontSize = 12.sp,
-                    color = Color.Black.copy(alpha=0.8f),
+                    color = Color.Black.copy(alpha = 0.8f),
                     fontWeight = FontWeight.Bold
                 ),
             )
@@ -128,10 +125,17 @@ fun RecipeCardMedium(
 @Composable
 fun RecipeCardMediumPreview() {
     RecipeCardMedium(
-        name = "Traditional spare ribs baked",
-        imageUrl = "https://cdn.pixabay.com/photo/2017/11/10/15/04/steak-2936531_1280.jpg",
-        chef = "Chef John",
-        time = "20 min",
-        rating = 4.0
+        recipe = sampleRecipe
     )
 }
+
+val sampleRecipe =
+    Recipe(
+        id = 1,
+        name = "Traditional spare ribs baked",
+        image = "https://cdn.pixabay.com/photo/2017/11/10/15/04/steak-2936531_1280.jpg",
+        chef = "Chef John",
+        time = "20 min",
+        rating = 4.0,
+    )
+

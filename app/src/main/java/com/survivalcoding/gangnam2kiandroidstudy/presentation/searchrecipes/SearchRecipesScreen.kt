@@ -9,9 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -29,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.survivalcoding.gangnam2kiandroidstudy.R
-import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCard
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCardMedium
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SearchField
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
@@ -54,17 +55,22 @@ fun SearchRecipesScreen(
         )
 
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             SearchField(
                 query = "",
                 placeholder = "Search recipe",
-                onQueryChange = {},
+                onQueryChange = {
+                    viewModel.changeSearchText(it)
+                },
                 onSearch = {},
                 modifier = Modifier.weight(1f)
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Box(
                 contentAlignment = Alignment.Center,
@@ -79,7 +85,7 @@ fun SearchRecipesScreen(
                     )
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.outline_setting_2),
+                    painter = painterResource(R.drawable.ic_setting_4_outline),
                     contentDescription = "setting icon",
                     tint = AppColors.white,
                     modifier = Modifier.size(20.dp),
@@ -93,7 +99,7 @@ fun SearchRecipesScreen(
             modifier = Modifier.padding(top = 10.dp, bottom = 17.dp),
         )
 
-        Spacer(modifier = Modifier.width(20.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -101,15 +107,13 @@ fun SearchRecipesScreen(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
         ) {
             items(recipes) { recipe ->
-                RecipeCard(
-                    name = recipe.name,
-                    imageUrl = recipe.image,
-                    chef = recipe.chef,
-                    time = recipe.time,
-                    rating = recipe.rating
+                RecipeCardMedium(
+                    recipe
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
