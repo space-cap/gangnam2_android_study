@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.survivalcoding.gangnam2kiandroidstudy.AppApplication
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
@@ -58,6 +59,18 @@ class TodoViewModel(
             _uiState.value = _uiState.value.copy(todos = todos, isLoading = false)
         }
     }
+
+    fun addTodo(todo: Todo) {
+        viewModelScope.launch {
+            todoRepository.addTodo(todo)
+            val todos = todoRepository.getTodos()
+            //_uiState.value = _uiState.value.copy(todos = todos)
+            _uiState.update {
+                it.copy(todos = todos)
+            }
+        }
+    }
+
 
     companion object {
 

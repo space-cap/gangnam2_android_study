@@ -10,4 +10,8 @@ data class Todo(
 
 interface TodoDataSource {
     suspend fun getTodos(): List<Todo>
+    suspend fun addTodo(todo: Todo)
 }
+
+
+

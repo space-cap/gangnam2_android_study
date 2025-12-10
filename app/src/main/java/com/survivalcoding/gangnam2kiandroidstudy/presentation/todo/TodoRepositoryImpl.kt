@@ -4,4 +4,8 @@ class TodoRepositoryImpl(private val dataSource: TodoDataSource) : TodoRepositor
     override suspend fun getTodos(): List<Todo> {
         return dataSource.getTodos()
     }
+
+    override suspend fun addTodo(todo: Todo) {
+        dataSource.addTodo(todo)
+    }
 }
