@@ -6,9 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.survivalcoding.gangnam2kiandroidstudy.presentation.todo.TodoScreen
+import androidx.compose.ui.unit.dp
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SearchField
 
 class LeeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,11 +16,15 @@ class LeeActivity : ComponentActivity() {
         Log.d(TAG, "onCreate")
         enableEdgeToEdge()
         setContent {
-            Scaffold { innerPadding ->
-                TodoScreen(
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
+
+            SearchField(
+                query = "",
+                placeholder = "Search recipe",
+                onQueryChange = {},
+                onSearch = {},
+                modifier = Modifier.padding(16.dp)
+            )
+
         }
     }
 
