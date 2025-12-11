@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.survivalcoding.gangnam2kiandroidstudy.presentation.searchrecipes.SearchRecipesScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.searchrecipes.SearchRecipesRoot
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.searchrecipes.SearchRecipesViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +30,12 @@ class MainActivity : ComponentActivity() {
 
                 // SplashScreen()
                 // SavedRecipesScreen()
-                SearchRecipesScreen()
+                // CounterScreen()
+                // BottomSheetScreen()
+                // SearchRecipesScreen()
+                SearchRecipesRoot(
+                    viewModel = viewModel(factory = SearchRecipesViewModel.Factory)
+                )
 
 
             }

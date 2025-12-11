@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,15 +22,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.survivalcoding.gangnam2kiandroidstudy.R
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCardMedium
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SearchField
@@ -38,11 +36,11 @@ import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 
 @Composable
 fun SearchRecipesScreen(
+    state: SearchRecipesState = SearchRecipesState(),
+    onChangeSearchText: (String) -> Unit = {},
     modifier: Modifier = Modifier,
-    viewModel: SearchRecipesViewModel = viewModel(factory = SearchRecipesViewModel.Factory)
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val recipes = uiState.filteredRecipes
+    val recipes = state.filteredRecipes
 
     Column(
         modifier = modifier
@@ -62,10 +60,10 @@ fun SearchRecipesScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             SearchField(
-                query = uiState.searchText,
+                query = state.searchText,
                 placeholder = "Search recipe",
                 onQueryChange = {
-                    viewModel.changeSearchText(it)
+                    onChangeSearchText(it)
                 },
                 onSearch = {},
                 modifier = Modifier.weight(1f)
@@ -102,19 +100,20 @@ fun SearchRecipesScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
-            horizontalArrangement = Arrangement.spacedBy(15.dp),
-        ) {
-            items(recipes) { recipe ->
-                RecipeCardMedium(
-                    recipe
-                )
+        Box(modifier = Modifier.weight(1f)) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(15.dp),
+                horizontalArrangement = Arrangement.spacedBy(15.dp),
+                contentPadding = PaddingValues(bottom = 10.dp),
+            ) {
+                items(recipes) { recipe ->
+                    RecipeCardMedium(
+                        recipe
+                    )
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
