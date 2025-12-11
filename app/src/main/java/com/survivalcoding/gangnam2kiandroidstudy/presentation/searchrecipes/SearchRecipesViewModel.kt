@@ -46,7 +46,7 @@ class SearchRecipesViewModel(
                 }
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(isLoading = false, error = e.message)
+                    it.copy(isLoading = false)
                 }
             }
         }

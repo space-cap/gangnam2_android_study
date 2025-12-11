@@ -71,7 +71,7 @@ fun SearchRecipesScreen(
                 modifier = Modifier.weight(1f)
             )
 
-            Spacer(modifier = Modifier.width(12.dp)
+            Spacer(modifier = Modifier.width(12.dp))
 
             Box(
                 contentAlignment = Alignment.Center,
