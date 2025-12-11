@@ -38,17 +38,16 @@ class SearchRecipesViewModel(
 
         // ViewModel이 생성될 때 레시PI 목록을 가져옵니다.
         viewModelScope.launch {
-            // 로딩 상태를 true로 설정합니다.
-            _uiState.update {
-                it.copy(isLoading = true)
-            }
-
-            // 리포지토리에서 레시피 목록을 가져옵니다.
-            val recipes = recipeRepository.getRecipes()
-
-            // 가져온 레시피 목록으로 UI 상태를 업데이트하고 로딩 상태를 false로 설정합니다.
-            _uiState.update {
-                it.copy(recipes = recipes, isLoading = false)
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val recipes = recipeRepository.getRecipes()
+                _uiState.update {
+                    it.copy(recipes = recipes, isLoading = false)
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(isLoading = false, error = e.message)
+                }
             }
         }
     }
