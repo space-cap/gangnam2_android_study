@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.asStateFlow
 
 
 class CounterViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(CounterState())
+    val uiState = _uiState.asStateFlow()
+
     // private: ViewModel 내부에서만 수정 가능한 MutableStateFlow
     // 외부에서 직접 수정하는 것을 방지
     private val _count = MutableStateFlow(0)
