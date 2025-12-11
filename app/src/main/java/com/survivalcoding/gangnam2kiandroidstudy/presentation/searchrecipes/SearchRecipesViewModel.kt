@@ -56,10 +56,24 @@ class SearchRecipesViewModel(
         searchText: String = uiState.value.searchText,
         searchFilter: RecipeFilterState = uiState.value.searchFilter,
     ) {
-        setLoading(true)
+        viewModelScope.launch {
+            setLoading(true)
+            try {
+                val allRecipes = uiState.value.recipes
+                val filtered = if (searchText.isBlank()) {
+                    allRecipes
+                } else {
+                    allRecipes.filter { recipe ->
+                        recipe.name.contains(searchText, ignoreCase = true) ||
+                                recipe.chef.contains(searchText, ignoreCase = true)
+                    }
+                }
+                _uiState.update { it.copy(filteredRecipes = filtered) }
+            } finally {
+                setLoading(false)
+            }
+        }
 
-
-        setLoading(false)
     }
 
     fun changeSearchText(searchText: String) {
