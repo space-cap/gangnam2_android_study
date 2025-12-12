@@ -9,11 +9,13 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.survivalcoding.gangnam2kiandroidstudy.AppApplication
 import com.survivalcoding.gangnam2kiandroidstudy.data.repository.RecipeRepository
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 class HomeViewModel(
     private val recipeRepository: RecipeRepository,
 ) : ViewModel() {
@@ -22,6 +24,8 @@ class HomeViewModel(
 
 
     init {
+
+
         // ViewModel이 생성될 때 레시피 목록을 가져옵니다.
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }

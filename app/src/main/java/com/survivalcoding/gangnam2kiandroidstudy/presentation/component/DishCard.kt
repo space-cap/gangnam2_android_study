@@ -188,7 +188,8 @@ fun DishCardPreview() {
             image = "https://cdn.pixabay.com/photo/2014/11/05/15/57/salmon-518032_1280.jpg",
             chef = "코딩셰프",
             time = "30min",
-            rating = 4.8
+            rating = 4.8,
+            category = "Dessert",
         ),
         onDishClick = {},
         onBookmarkClick = {}
