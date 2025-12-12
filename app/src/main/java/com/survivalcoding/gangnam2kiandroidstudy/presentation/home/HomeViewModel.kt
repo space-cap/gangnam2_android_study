@@ -12,6 +12,11 @@ import com.survivalcoding.gangnam2kiandroidstudy.data.repository.RecipeRepositor
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,8 +29,6 @@ class HomeViewModel(
 
 
     init {
-
-
         // ViewModel이 생성될 때 레시피 목록을 가져옵니다.
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -48,41 +51,50 @@ class HomeViewModel(
                 }
             }
         }
+
+        // 검색어 변경 시 debounce 적용하여 필터링
+        uiState
+            .map { it.searchText }
+            .debounce(DEBOUNCE_TIMEOUT_MILLIS)
+            .distinctUntilChanged()
+            .onEach { fetchRecipes() }
+            .launchIn(viewModelScope)
     }
 
 
+    private fun fetchRecipes() {
+        val currentState = _uiState.value
+        val filtered = currentState.recipes.filter { recipe ->
+            // 카테고리 필터링
+            val matchesCategory = currentState.selectedCategory.isEmpty() ||
+                    currentState.selectedCategory == "All" ||
+                    recipe.category.equals(currentState.selectedCategory, ignoreCase = true)
+
+            // 검색어 필터링
+            val matchesSearch = currentState.searchText.isEmpty() ||
+                    recipe.name.contains(currentState.searchText, ignoreCase = true)
+
+            matchesCategory && matchesSearch
+        }
+
+        _uiState.update {
+            it.copy(filteredRecipes = filtered)
+        }
+    }
+
     fun changeCategory(category: String) {
         _uiState.update {
-            val filtered = if (category == "All" || category.isEmpty()) {
-                it.recipes
-            } else {
-                it.recipes.filter { recipe ->
-                    recipe.category == category
-                }
-            }.filter { recipe ->
-                recipe.name.contains(it.searchText, ignoreCase = true)
-            }
-            it.copy(
-                selectedCategory = category,
-                filteredRecipes = filtered
-            )
+            it.copy(selectedCategory = category)
         }
+        // 카테고리 변경 시 즉시 필터링
+        fetchRecipes()
     }
 
     fun changeSearchText(searchText: String) {
         _uiState.update {
-            val filtered = it.recipes.filter { recipe ->
-                recipe.name.contains(searchText, ignoreCase = true)
-            }.filter { recipe ->
-                it.selectedCategory.isEmpty() ||
-                        it.selectedCategory == "All" ||
-                        recipe.category == it.selectedCategory
-            }
-            it.copy(
-                searchText = searchText,
-                filteredRecipes = filtered
-            )
+            it.copy(searchText = searchText)
         }
+        // Flow에서 debounce 처리하므로 여기서는 상태만 업데이트
     }
 
     companion object {
