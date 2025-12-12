@@ -1,5 +1,6 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -34,8 +35,12 @@ class HomeViewModel(
                     )
                 }
             } catch (e: Exception) {
+                Log.e("HomeViewModel", "Failed to load recipes", e)
                 _uiState.update {
-                    it.copy(isLoading = false)
+                    it.copy(
+                        isLoading = false,
+                        errorMessages = e.message,
+                    )
                 }
             }
         }
