@@ -10,6 +10,9 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.home.HomeRoot
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.main.MainScreen
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.notifications.NotificationsScreen
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.profile.ProfileScreen
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.savedrecipes.SavedRecipesScreen
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.signin.SignInScreen
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.signup.SignUpScreen
@@ -57,7 +60,7 @@ fun NavigationRoot(
                     onLogin = {
                         Log.d("NavigationRoot", "SignIn -> Home")
                         topLevelBackStack.clear()
-                        topLevelBackStack.add(Route.Home)
+                        topLevelBackStack.add(Route.Main)
                     },
                     onSignUp = {
                         Log.d("NavigationRoot", "SignIn -> SignUp")
@@ -75,10 +78,39 @@ fun NavigationRoot(
                     }
                 )
             }
+
             entry<Route.Home> {
                 HomeRoot()
             }
+
             entry<Route.SavedRecipes> { SavedRecipesScreen() }
+
+            entry<Route.Main> {
+                val backStack = rememberNavBackStack(Route.Home)
+
+                MainScreen(
+                    backStack = backStack,
+                    body = {
+                        NavDisplay(
+                            modifier = modifier,
+                            backStack = backStack,
+                            entryProvider = entryProvider {
+                                entry<Route.Home> { HomeRoot() }
+                                entry<Route.SavedRecipes> {
+                                    SavedRecipesScreen(
+                                        onClick = { recipeId ->
+                                            topLevelBackStack.removeIf { it is Route.RecipeDetail }
+                                            topLevelBackStack.add(Route.RecipeDetail(recipeId))
+                                        }
+                                    )
+                                }
+                                entry<Route.Notifications> { NotificationsScreen() }
+                                entry<Route.Profile> { ProfileScreen() }
+                            }
+                        )
+                    }
+                )
+            }
         }
     )
 }

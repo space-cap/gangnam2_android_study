@@ -26,7 +26,7 @@ fun BottomNavigationBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(90.dp)
+            .height(96.dp)
             .background(Color.White)
             .padding(top = 5.dp),
         horizontalArrangement = Arrangement.SpaceAround,
