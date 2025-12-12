@@ -9,22 +9,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.survivalcoding.gangnam2kiandroidstudy.AppApplication
-import com.survivalcoding.gangnam2kiandroidstudy.data.model.Recipe
 import com.survivalcoding.gangnam2kiandroidstudy.data.repository.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-/**
- * 저장된 레시피 화면의 UI 상태를 나타내는 데이터 클래스입니다.
- *
- * @property recipes 저장된 레시피 목록
- * @property isLoading 데이터 로딩 중인지 여부
- */
-data class RecipeUiState(
-    val recipes: List<Recipe> = emptyList(),
-    val isLoading: Boolean = false,
-)
 
 /**
  * 저장된 레시피 화면의 ViewModel입니다.
@@ -38,7 +26,7 @@ class SavedRecipesViewModel(
 ) : ViewModel() {
 
     // UI 상태를 private MutableStateFlow로 관리합니다.
-    private val _uiState = MutableStateFlow(RecipeUiState())
+    private val _uiState = MutableStateFlow(SavedRecipesState())
 
     // 외부에는 읽기 전용 StateFlow로 UI 상태를 노출합니다.
     val uiState = _uiState.asStateFlow()
@@ -73,5 +61,7 @@ class SavedRecipesViewModel(
             }
         }
     }
-
 }
+
+
+

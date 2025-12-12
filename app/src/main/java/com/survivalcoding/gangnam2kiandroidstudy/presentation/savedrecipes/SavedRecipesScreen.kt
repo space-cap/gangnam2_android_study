@@ -13,14 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCard
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
@@ -28,11 +25,9 @@ import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 @Composable
 fun SavedRecipesScreen(
     modifier: Modifier = Modifier,
-    viewModel: SavedRecipesViewModel = viewModel(factory = SavedRecipesViewModel.Factory),
+    uiState: SavedRecipesState = SavedRecipesState(),
     onClick: (Int) -> Unit = {},
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     Box(
         modifier = modifier.padding(
             paddingValues = PaddingValues(
@@ -79,8 +74,6 @@ fun SavedRecipesScreen(
                     }
                 }
             }
-
-
         }
     }
 }
