@@ -15,7 +15,7 @@ junitKtx = "1.3.0"
 
 nav3Core = "1.0.0"
 lifecycleViewmodelNav3 = "2.10.0"
-kotlinSerialization = "2.1.21"
+kotlinSerialization = "2.2.21"
 kotlinxSerializationCore = "1.8.1"
 material3AdaptiveNav3 = "1.3.0-alpha05"
 

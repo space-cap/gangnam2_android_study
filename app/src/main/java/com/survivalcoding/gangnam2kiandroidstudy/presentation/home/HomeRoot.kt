@@ -14,7 +14,8 @@ fun HomeRoot(
 ) {
     // 현재 컨텍스트에서 applicationContext를 가져옵니다.
     val context = LocalContext.current
-    val application = context.applicationContext as Application
+    val application = context.applicationContext as? Application
+        ?: error("Application context is not available")
 
     // 위에서 수정한 Factory를 사용하여 ViewModel을 생성합니다.
     val viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(application))
