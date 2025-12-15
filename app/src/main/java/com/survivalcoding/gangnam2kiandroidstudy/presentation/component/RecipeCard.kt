@@ -1,6 +1,7 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,13 +40,19 @@ fun RecipeCard(
     chef: String,
     time: String,
     rating: Double,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .height(150.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
+            .clickable(onClick = onClick),
+
+
+
+
     ) {
 
         // Background Image

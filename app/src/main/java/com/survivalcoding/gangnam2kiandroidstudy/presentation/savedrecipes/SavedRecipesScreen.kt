@@ -26,7 +26,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 fun SavedRecipesScreen(
     modifier: Modifier = Modifier,
     uiState: SavedRecipesState = SavedRecipesState(),
-    onClick: (Int) -> Unit = {},
+    onClick: (Long) -> Unit = {},
 ) {
     Box(
         modifier = modifier.padding(
@@ -67,7 +67,8 @@ fun SavedRecipesScreen(
                             imageUrl = recipe.image,
                             chef = recipe.chef,
                             time = recipe.time,
-                            rating = recipe.rating
+                            rating = recipe.rating,
+                            onClick = { onClick(recipe.id) },
                         )
 
                         Spacer(Modifier.height(20.dp))
