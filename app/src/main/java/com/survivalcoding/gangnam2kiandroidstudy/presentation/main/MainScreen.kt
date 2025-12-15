@@ -29,8 +29,10 @@ fun MainScreen(
                 NavigationBarItem(
                     selected = currentRoute is Route.Home,
                     onClick = {
-                        backStack.clear()
-                        backStack.add(Route.Home)
+                        if (currentRoute !is Route.Home) {
+                            backStack.clear()
+                            backStack.add(Route.Home)
+                        }
                     },
                     icon = {
                         Icon(
@@ -43,8 +45,10 @@ fun MainScreen(
                 NavigationBarItem(
                     selected = currentRoute is Route.SavedRecipes,
                     onClick = {
-                        backStack.clear()
-                        backStack.add(Route.SavedRecipes)
+                        if (currentRoute !is Route.SavedRecipes) {
+                            backStack.clear()
+                            backStack.add(Route.SavedRecipes)
+                        }
                     },
                     icon = {
                         Icon(
@@ -57,8 +61,10 @@ fun MainScreen(
                 NavigationBarItem(
                     selected = currentRoute is Route.Notifications,
                     onClick = {
-                        backStack.clear()
-                        backStack.add(Route.Notifications)
+                        if (currentRoute !is Route.Notifications) {
+                            backStack.clear()
+                            backStack.add(Route.Notifications)
+                        }
                     },
                     icon = {
                         Icon(
@@ -71,8 +77,10 @@ fun MainScreen(
                 NavigationBarItem(
                     selected = currentRoute is Route.Profile,
                     onClick = {
-                        backStack.clear()
-                        backStack.add(Route.Profile)
+                        if (currentRoute !is Route.Profile) {
+                            backStack.clear()
+                            backStack.add(Route.Profile)
+                        }
                     },
                     icon = {
                         Icon(
