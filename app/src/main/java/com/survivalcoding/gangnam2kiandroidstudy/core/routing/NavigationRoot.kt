@@ -89,7 +89,14 @@ fun NavigationRoot(
                 HomeRoot()
             }
 
-            entry<Route.SavedRecipes> { SavedRecipesRoot() }
+            entry<Route.SavedRecipes> {
+                SavedRecipesRoot(
+                    onItemClick = { recipeId ->
+                        Log.d("NavigationRoot", "SavedRecipes -> RecipeDetails: $recipeId")
+                        topLevelBackStack.add(Route.RecipeDetail(recipeId))
+                    }
+                )
+            }
 
             entry<Route.RecipeDetail> { RecipeDetailsScreen(it.recipeId) }
 
@@ -108,7 +115,14 @@ fun NavigationRoot(
                             ),
                             entryProvider = entryProvider {
                                 entry<Route.Home> { HomeRoot() }
-                                entry<Route.SavedRecipes> { SavedRecipesRoot() }
+                                entry<Route.SavedRecipes> {
+                                    SavedRecipesRoot(
+                                        onItemClick = { recipeId ->
+                                            topLevelBackStack.removeIf { it is Route.RecipeDetails }
+                                            topLevelBackStack.add(Route.RecipeDetails(recipeId))
+                                        },
+                                    )
+                                }
                                 entry<Route.Notifications> { NotificationsScreen() }
                                 entry<Route.Profile> { ProfileScreen() }
                             }

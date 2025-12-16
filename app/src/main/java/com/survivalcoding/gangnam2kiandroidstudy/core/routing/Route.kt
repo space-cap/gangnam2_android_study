@@ -29,7 +29,7 @@ sealed interface Route : NavKey {
     data object Profile : Route
 
     @Serializable
-    data class RecipeDetail(val recipeId: Int) : Route
+    data class RecipeDetails(val recipeId: Long) : Route
 
     // companion object: Route와 관련된 추가적인 정보를 담는 공간입니다.
     companion object Companion {
