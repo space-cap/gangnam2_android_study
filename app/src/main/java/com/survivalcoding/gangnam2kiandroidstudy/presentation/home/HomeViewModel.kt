@@ -1,10 +1,10 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.home
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.survivalcoding.gangnam2kiandroidstudy.AppApplication
 import com.survivalcoding.gangnam2kiandroidstudy.data.repository.RecipeRepository
 import kotlinx.coroutines.FlowPreview
@@ -100,11 +100,14 @@ class HomeViewModel(
     }
 }
 
-class HomeViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+class HomeViewModelFactory : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        // CreationExtras에서 Application을 자동으로 가져옵니다
+        val application = extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
+                as AppApplication
+
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            // 전달받은 application을 안전하게 캐스팅하여 repository 생성
-            val recipeRepository = (application as AppApplication).recipeRepository
+            val recipeRepository = application.recipeRepository
             @Suppress("UNCHECKED_CAST")
             return HomeViewModel(recipeRepository) as T
         }
