@@ -2,7 +2,7 @@ package com.survivalcoding.gangnam2kiandroidstudy.presentation.savedrecipes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.survivalcoding.gangnam2kiandroidstudy.data.repository.RecipeRepository
+import com.survivalcoding.gangnam2kiandroidstudy.domain.usercase.GetSavedRecipesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  * @property recipeRepository 레시피 데이터를 가져오는 리포지토리
  */
 class SavedRecipesViewModel(
-    private val recipeRepository: RecipeRepository,
+    private val getSavedRecipesUseCase: GetSavedRecipesUseCase,
 ) : ViewModel() {
 
     // UI 상태를 private MutableStateFlow로 관리합니다.
@@ -29,7 +29,7 @@ class SavedRecipesViewModel(
                 // 로딩 상태를 true로 설정합니다.
                 _uiState.value = _uiState.value.copy(isLoading = true)
                 // 리포지토리에서 레시피 목록을 가져옵니다.
-                val recipes = recipeRepository.getRecipes()
+                val recipes = getSavedRecipesUseCase.invoke()
                 // 가져온 레시피 목록으로 UI 상태를 업데이트하고 로딩 상태를 false로 설정합니다.
                 _uiState.value = _uiState.value.copy(recipes = recipes, isLoading = false)
             } catch (e: Exception) {

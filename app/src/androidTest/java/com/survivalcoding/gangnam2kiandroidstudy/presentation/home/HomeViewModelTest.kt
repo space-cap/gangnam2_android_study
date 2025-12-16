@@ -1,6 +1,6 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.home
 
-import com.survivalcoding.gangnam2kiandroidstudy.data.model.Recipe
+import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
 import com.survivalcoding.gangnam2kiandroidstudy.rules.MainCoroutineRule
 import com.survivalcoding.gangnam2kiandroidstudy.util.TestRecipeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
