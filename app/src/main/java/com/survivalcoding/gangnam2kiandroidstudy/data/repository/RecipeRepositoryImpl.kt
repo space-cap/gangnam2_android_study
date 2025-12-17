@@ -1,5 +1,6 @@
 package com.survivalcoding.gangnam2kiandroidstudy.data.repository
 
+import android.util.Log
 import com.survivalcoding.gangnam2kiandroidstudy.data.datasource.RecipeDataSource
 import com.survivalcoding.gangnam2kiandroidstudy.data.mapper.toRecipe
 import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
@@ -25,7 +26,7 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun setRecipe(recipe: Recipe) {
-        // Log.d("RecipeRepositoryImpl", "Setting recipe: $recipe")
+        Log.d("RecipeRepositoryImpl", "setRecipe: $recipe")
         // TODO: 로컬 저장소(Room DB 등)에 레시피 저장 구현 필요
         // 현재는 no-op으로 처리
     }
