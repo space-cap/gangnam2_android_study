@@ -171,7 +171,7 @@ fun RecipeDetailsScreen(
         Tabs(
             labels = listOf("Ingredient", "Procedure").toImmutableList(),
             selectedIndex = uiState.selectedTabIndex,
-            onTabSelected = { uiState.selectedTabIndex = it }
+            onTabSelected = onTabClick,
         )
 
 
