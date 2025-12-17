@@ -25,6 +25,8 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun setRecipe(recipe: Recipe) {
-        TODO("Not yet implemented")
+        // Log.d("RecipeRepositoryImpl", "Setting recipe: $recipe")
+        // TODO: 로컬 저장소(Room DB 등)에 레시피 저장 구현 필요
+        // 현재는 no-op으로 처리
     }
 }
