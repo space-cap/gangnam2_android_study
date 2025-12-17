@@ -19,6 +19,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.signin.SignInScree
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.signup.SignUpScreen
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.splash.SplashScreen
 
+
 /**
  * 앱의 전체적인 탐색(navigation) 구조를 정의하는 최상위 Composable 함수입니다.
  *
@@ -89,7 +90,12 @@ fun NavigationRoot(
                 HomeRoot()
             }
 
-            entry<Route.RecipeDetails> { RecipeDetailsRoot(it.recipeId) }
+            entry<Route.RecipeDetails> {
+                RecipeDetailsRoot(
+                    id = it.recipeId,
+                    onBackClick = { topLevelBackStack.remove(it) },
+                    )
+            }
 
             entry<Route.Main> {
                 val backStack = rememberNavBackStack(Route.Home)
