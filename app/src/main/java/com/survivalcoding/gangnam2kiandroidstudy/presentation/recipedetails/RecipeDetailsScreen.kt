@@ -124,7 +124,7 @@ fun RecipeDetailsScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AsyncImage(
-                    model = uiState.profile?.image?.orPreview,
+                    model = uiState.profile?.imageUrl?.orPreview,
                     contentDescription = "profile image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -259,7 +259,7 @@ fun RecipeDetailsScreenPreview() {
     val profile = Profile(
         id = 1,
         name = "Afuwape Abiodun",
-        image = "https://picsum.photos/id/259/200/300",
+        imageUrl = "https://picsum.photos/id/259/200/300",
         address = "Lagos, Nigeria",
         email = "lee@naver.com",
     )
@@ -268,7 +268,7 @@ fun RecipeDetailsScreenPreview() {
         Ingredient(
             id = 1,
             name = "Tomato",
-            image = "",
+            imageUrl = "",
             amount = IngredientAmount(1.0, UnitType.PIECE),
         ),
     )

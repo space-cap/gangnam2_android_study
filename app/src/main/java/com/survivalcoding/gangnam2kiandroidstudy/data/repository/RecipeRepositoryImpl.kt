@@ -17,7 +17,7 @@ class RecipeRepositoryImpl(
         return emptyList()
     }
 
-    override suspend fun getRecipeById(recipeId: Long): Recipe? {
+    override suspend fun getRecipe(recipeId: Long): Recipe? {
         return getRecipes().find { it.id == recipeId }
     }
 

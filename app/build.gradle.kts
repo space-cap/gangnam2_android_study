@@ -82,4 +82,9 @@ dependencies {
     implementation(libs.androidx.material3.adaptive.navigation3)
     implementation(libs.kotlinx.serialization.core)
 
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(platform("io.insert-koin:koin-bom:4.1.1"))
+    implementation("io.insert-koin:koin-android")
+
 }

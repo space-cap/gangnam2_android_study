@@ -47,7 +47,7 @@ fun IngredientItem(
 
         ) {
             AsyncImage(
-                model = ingredient.image,
+                model = ingredient.imageUrl,
                 contentDescription = ingredient.name,
                 modifier = Modifier
                     .width(40.dp)
@@ -79,7 +79,7 @@ fun IngredientItemPreview() {
     IngredientItem(
         ingredient = Ingredient(
             id = 1,
-            image = "https://cdn.pixabay.com/photo/2017/10/06/17/17/tomato-2823826_1280.jpg",
+            imageUrl = "https://cdn.pixabay.com/photo/2017/10/06/17/17/tomato-2823826_1280.jpg",
             name = "Tomatos",
             amount = IngredientAmount(
                 value = 1.0,

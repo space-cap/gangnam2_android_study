@@ -13,5 +13,4 @@ data class RecipeDetailsState(
     val reviewCount: Int = 0,
     val ingredients: List<Ingredient> = emptyList(),
     val procedures: List<Procedure> = emptyList(),
-
-    )
+)
