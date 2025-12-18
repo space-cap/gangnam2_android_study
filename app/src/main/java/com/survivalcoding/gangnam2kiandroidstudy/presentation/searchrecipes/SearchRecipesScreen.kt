@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -34,6 +36,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SearchFi
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 
+
 @Composable
 fun SearchRecipesScreen(
     state: SearchRecipesState = SearchRecipesState(),
@@ -45,7 +48,11 @@ fun SearchRecipesScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
+            .background(color = AppColors.white)
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(horizontal = 30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(R.string.search_recipes_title),
@@ -92,16 +99,24 @@ fun SearchRecipesScreen(
             }
         }
 
-        Text(
-            text = "Recent Search",
-            style = AppTextStyles.mediumTextBold,
-            modifier = Modifier.padding(top = 10.dp, bottom = 20.dp),
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "Recent Search",
+                style = AppTextStyles.mediumTextBold,
+                modifier = Modifier.padding(top = 10.dp, bottom = 20.dp),
+            )
+        }
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 34.dp)
+                .padding(vertical = 4.dp)
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
