@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * 저장된 레시피 화면의 ViewModel입니다.
  *
- * @property recipeRepository 레시피 데이터를 가져오는 리포지토리
+ * @property getSavedRecipesUseCase 저장된 레시피를 가져오는 UseCase
  */
 @HiltViewModel
 class SavedRecipesViewModel @Inject constructor(
