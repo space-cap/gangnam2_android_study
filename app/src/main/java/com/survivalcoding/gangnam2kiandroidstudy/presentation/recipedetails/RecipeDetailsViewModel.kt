@@ -20,19 +20,23 @@ class RecipeDetailsViewModel @Inject constructor(
     val uiState: StateFlow<RecipeDetailsState> = _uiState.asStateFlow()
 
     fun fetchRecipeDetails(recipeId: Long) {
-        setLoading(true)
+
         viewModelScope.launch {
-            val result = getRecipeDetailsUseCase(recipeId)
-            _uiState.update {
-                it.copy(
-                    recipe = result.recipe,
-                    profile = result.profile,
-                    ingredients = result.ingredients,
-                    procedures = result.procedures,
-                )
+            setLoading(true)
+            try {
+                val result = getRecipeDetailsUseCase(recipeId)
+                _uiState.update {
+                    it.copy(
+                        recipe = result.recipe,
+                        profile = result.profile,
+                        ingredients = result.ingredients,
+                        procedures = result.procedures,
+                    )
+                }
+            } finally {
+                setLoading(false)
             }
         }
-        setLoading(false)
     }
 
     fun changeTab(selectedIndex: Int) {
