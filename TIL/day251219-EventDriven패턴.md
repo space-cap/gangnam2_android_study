@@ -4,118 +4,72 @@
 
 ## UI 상태 처리용 Flow는 StateFlow
 
-- StateFlow
-  - 상태의 흐름, 항상 최신 값을 유지
-  - 초기값 필수, 항상 값이 있음
-  - 구독자가 없어도 최신 값 유지
-  - 값이 변경되면 구독자에 알림
+*   **StateFlow**
+    *   상태의 흐름, 항상 최신 값을 유지
+    *   초기값 필수, 항상 값이 있음
+    *   구독자가 없어도 최신 값 유지
+    *   값이 변경되면 구독자에 알림
 
 ## 1회성 이벤트 처리 흐름
 
-### 1. 1회성 이벤트 처리를 위한 `SharedFlow` 또는 `Channel`
+*   **SharedFlow 또는 Channel 사용**
+    *   Navigation, Snackbar 등 1회성 이벤트에 사용
+*   **이벤트 타입을 Sealed Interface로 정의**
+    *   타입 안전성 보장
+    *   `when` 식에서 모든 케이스 처리 강제
+*   **UI에서 LaunchedEffect로 이벤트 처리**
+    *   컴포지션이 활성화될 때 코루틴 시작
+    *   컴포지션이 종료될 때 코루틴 취소
 
-`StateFlow`는 상태를 나타내므로 항상 최신 값을 가지고 있고, 화면 회전과 같이 UI가 재생성될 때 마지막 값을 다시 방출합니다. 그래서 스낵바 표시나 화면 이동 같은 1회성 이벤트에 사용하면 의도치 않게 이벤트가 반복해서 발생하는 문제가 생길 수 있습니다.
+---
 
-이러한 1회성 이벤트를 처리하기 위해 `SharedFlow`나 `Channel`을 사용하는 것이 좋습니다.
+## 상세 설명 및 단계별 예제
 
-#### `SharedFlow` 사용하기
+### 문제 상황: `StateFlow`와 1회성 이벤트
 
-`SharedFlow`는 새로운 구독자에게 이전 값을 재전송할지(`replay` 캐시) 여부를 설정할 수 있어 1회성 이벤트를 처리하는 데 매우 유용합니다.
+`StateFlow`는 UI의 '상태'를 표현하는 데 아주 효과적입니다. 하지만 스낵바 표시, 화면 이동, 다이얼로그 열기 같은 **1회성 이벤트**에 `StateFlow`를 사용하면 문제가 발생할 수 있습니다. `StateFlow`는 항상 최신 값을 가지고 있으며, 화면 회전 등으로 UI가 재생성될 때 마지막 값을 새로운 구독자(UI)에게 다시 전달합니다. 이 때문에 원하지 않게 스낵바가 다시 뜨거나 화면 이동이 반복될 수 있습니다.
 
--   **`replay = 0` (기본값)**: 새로운 구독자는 구독 시작 이후에 발생하는 이벤트만 받게 됩니다. 이전에 발생한 이벤트는 받지 않으므로 1회성 이벤트 처리에 적합합니다.
--   **`extraBufferCapacity`**: `replay`와 별도로 버퍼를 두어 이벤트를 저장할 수 있습니다. 이벤트가 빠르게 발생할 때 구독자가 놓치지 않도록 도와줍니다.
--   **`onBufferOverflow`**: 버퍼가 가득 찼을 때 어떻게 처리할지 정책을 정합니다. `BufferOverflow.DROP_OLDEST`는 가장 오래된 이벤트를 버려서 새로운 이벤트를 위한 공간을 만듭니다.
+이 문제를 해결하기 위해 1회성 이벤트는 '이벤트 기반'으로 처리하는 것이 좋습니다. 아래 단계별 가이드를 통해 알아보겠습니다.
 
-**ViewModel 예제 (`SharedFlow`)**
+### 1단계: `Sealed Interface`로 이벤트 정의하기
 
-`replay` 캐시를 사용하지 않도록 설정하여, 새로운 구독자가 이전 이벤트를 받지 못하게 합니다.
+먼저, 한 화면에서 발생할 수 있는 모든 1회성 이벤트를 한 곳에서 명확하게 정의하는 것이 좋습니다. 이때 `sealed interface`(봉인된 인터페이스)를 사용하면 매우 효과적입니다.
+
+*   **왜 `Sealed Interface`를 사용할까요?**
+    *   **타입 안전성**: 어떤 이벤트들이 발생 가능한지 명확히 정의할 수 있습니다.
+    *   **컴파일러 경고**: `when` 표현식으로 이벤트를 처리할 때, 모든 이벤트 타입을 처리했는지 컴파일러가 검사해주어 실수를 방지합니다.
+    *   **코드 구성**: 관련된 이벤트들을 하나의 그룹으로 묶어 코드를 더 읽기 쉽고 유지보수하기 좋게 만듭니다.
+
+#### **예제: UI 이벤트 정의하기**
+
+스낵바를 보여주는 이벤트와 상세 화면으로 이동하는 이벤트를 정의해 보겠습니다.
 
 ```kotlin
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
+// MyScreenEvent.kt
 
-class EventViewModel : ViewModel() {
-
-    // replay=0 으로 설정하여 새로운 구독자가 이전 이벤트를 받지 않도록 합니다.
-    private val _eventFlow = MutableSharedFlow<UiEvent>(replay = 0)
-    val eventFlow = _eventFlow.asSharedFlow()
-
-    fun showSnackbar(message: String) {
-        viewModelScope.launch {
-            _eventFlow.emit(UiEvent.ShowSnackbar(message))
-        }
-    }
-}
-
-sealed interface UiEvent {
-    data class ShowSnackbar(val message: String) : UiEvent
+sealed interface MyScreenEvent {
+    data class ShowSnackbar(val message: String) : MyScreenEvent
+    object NavigateToDetails : MyScreenEvent
 }
 ```
 
-#### `Channel` 사용하기
+---
 
-`Channel`은 코루틴 간에 데이터를 안전하게 주고받기 위해 사용되는 통로입니다. `Channel`로 보낸 데이터는 **오직 하나의 구독자**만이 받을 수 있습니다.
+### 2단계: ViewModel에서 `SharedFlow`로 이벤트 생성 및 전송
 
-`Channel`은 "fire-and-forget" 스타일의 1회성 이벤트를 보내기에 적합합니다. `receiveAsFlow()` 확장 함수를 사용하면 `Channel`을 Cold Flow로 변환하여 UI에서 쉽게 사용할 수 있습니다.
+ViewModel은 비즈니스 로직을 처리하고, 그 결과로 1회성 이벤트를 발생시키는 역할을 합니다. 이때 `MutableSharedFlow`를 사용하여 이벤트를 UI로 전달합니다.
 
-**ViewModel 예제 (`Channel`)**
+*   **왜 `SharedFlow`를 사용할까요?**
+    `SharedFlow`는 여러 구독자에게 값을 전달(broadcast)하는 '핫 스트림'입니다. 1회성 이벤트를 위해 `replay = 0`으로 설정하는 것이 핵심입니다.
+    *   **`replay = 0`**: 이 설정은 새로운 구독자가 이전에 발생했던 값을 받지 못하게 합니다. 즉, 구독을 시작한 이후에 발생하는 새로운 이벤트만 받게 되므로, 화면 회전 시 이벤트가 재발생하는 문제를 막아줍니다.
+    *   **핫 스트림(Hot Stream)**: `viewModelScope` 내에서 계속 활성 상태를 유지하며, 구독자가 없어도 이벤트를 발행할 수 있습니다.
 
-```kotlin
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
+#### **예제: `SharedFlow`를 사용하는 ViewModel**
 
-class EventViewModel : ViewModel() {
-
-    private val _eventChannel = Channel<UiEvent>()
-    // Channel을 Flow로 변환하여 UI에서 쉽게 구독할 수 있도록 합니다.
-    val eventFlow = _eventChannel.receiveAsFlow()
-
-    fun showDialog(title: String, message: String) {
-        viewModelScope.launch {
-            _eventChannel.send(UiEvent.ShowDialog(title, message))
-        }
-    }
-}
-
-sealed interface UiEvent {
-    data class ShowDialog(val title: String, val message: String) : UiEvent
-}
-```
-
-#### `SharedFlow` vs `Channel`
-
--   **`SharedFlow`**: 하나의 이벤트를 여러 구독자가 동시에 처리해야 할 때 유용합니다. 예를 들어, 특정 이벤트가 발생했을 때 분석 로그도 남기고 UI도 업데이트해야 하는 경우에 적합합니다. UI 이벤트 처리에는 일반적으로 `SharedFlow`가 더 유연하고 권장됩니다.
--   **`Channel`**: 이벤트가 반드시 **한 번만, 단일 구독자에 의해** 처리되어야 할 때 사용합니다. 내비게이션 이벤트처럼 두 번 실행되면 곤란한 경우에 특히 유용합니다.
-
-결론적으로, 안드로이드 앱의 MVI 아키텍처에서 ViewModel과 UI 사이의 1회성 이벤트를 전달하는 데에는 둘 다 좋은 선택지이지만, 일반적으로는 더 유연한 `SharedFlow`가 선호되는 경향이 있습니다.
-
-### 2. 이벤트 타입을 위한 `Sealed Interface`
-
-다양한 종류의 1회성 이벤트를 관리하기 위해 `sealed interface` (봉인된 인터페이스)를 사용하면 좋습니다. 이렇게 하면 이벤트 유형을 명확하게 정의할 수 있고, `when` 표현식을 사용할 때 모든 이벤트 케이스를 처리하도록 강제할 수 있어 코드의 안정성을 높일 수 있습니다.
-
+`MutableSharedFlow`를 사용해 위에서 정의한 `MyScreenEvent`를 보내는 ViewModel 예제입니다.
 
 ```kotlin
-sealed interface MyEvent {
-    data class ShowSnackbar(val message: String) : MyEvent
-    object NavigateToDetail : MyEvent
-}
-```
-
-### 3. UI에서 이벤트를 처리하는 `LaunchedEffect`
-
-ViewModel에서 발생한 이벤트를 UI(Composable 함수)에서 처리할 때는 `LaunchedEffect`를 사용합니다. `LaunchedEffect`는 특정 키 값이 변경될 때만 코루틴을 실행하므로, 불필요한 재실행을 막고 정확한 시점에 이벤트를 처리할 수 있게 해줍니다.
-
-### 종합 예제 코드
-
-아래는 위 세 가지 개념을 모두 적용한 간단한 예제입니다.
-
-**ViewModel:**
-
-
-```kotlin
-// TodoViewModel.kt
+// MyViewModel.kt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -123,67 +77,74 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-// 1. Sealed Interface로 이벤트 정의
-sealed interface TodoEvent {
-    data class ShowSnackbar(val message: String) : TodoEvent
-    object NavigateToNextScreen : TodoEvent
-}
+class MyViewModel : ViewModel() {
 
-class TodoViewModel : ViewModel() {
+    // 1. private 가변 SharedFlow를 생성합니다.
+    //    replay=0 으로 설정하여 새 구독자가 이전 이벤트를 받지 못하게 합니다.
+    private val _eventFlow = MutableSharedFlow<MyScreenEvent>(replay = 0)
 
-    // 2. 1회성 이벤트를 위한 SharedFlow 사용
-    private val _eventFlow = MutableSharedFlow<TodoEvent>()
+    // 2. 외부에는 변경 불가능한 public SharedFlow로 노출합니다.
     val eventFlow = _eventFlow.asSharedFlow()
 
+    // 3. 저장 버튼 클릭 시 스낵바 이벤트를 발생시키는 함수입니다.
     fun onSaveButtonClick() {
         viewModelScope.launch {
-            // 비동기 작업 (예: 데이터 저장) 후 이벤트 발생
-            _eventFlow.emit(TodoEvent.ShowSnackbar("저장되었습니다!"))
+            // ... 저장 로직 수행 ...
+
+            // 로직 완료 후 이벤트를 발생시킵니다.
+            _eventFlow.emit(MyScreenEvent.ShowSnackbar("데이터가 저장되었습니다!"))
         }
     }
 
-    fun onGoToNextScreenClick() {
+    // 4. 상세 보기 버튼 클릭 시 내비게이션 이벤트를 발생시키는 함수입니다.
+    fun onDetailsButtonClick() {
         viewModelScope.launch {
-            _eventFlow.emit(TodoEvent.NavigateToNextScreen)
+            _eventFlow.emit(MyScreenEvent.NavigateToDetails)
         }
     }
 }
 ```
 
+---
 
+### 3단계: UI에서 `LaunchedEffect`로 이벤트 수신 및 처리
 
-**UI (Composable):**
+Composable UI에서는 ViewModel로부터 오는 이벤트를 수신하고, 스낵바를 보여주는 등의 실제 동작을 수행해야 합니다. 이때 가장 적합한 도구는 `LaunchedEffect`입니다.
 
+*   **왜 `LaunchedEffect`를 사용할까요?**
+    `LaunchedEffect`는 컴포지션에 진입했을 때 코루틴을 실행하는 Composable 함수입니다.
+    *   **생명주기 인식**: `LaunchedEffect`가 컴포지션을 벗어나면 코루틴이 자동으로 취소되어 메모리 누수를 방지합니다.
+    *   **제어된 재실행**: `key` 파라미터를 받아서, 이 `key`값이 변경될 때만 코루틴을 재시작합니다. `key1 = true`와 같이 상수를 사용하면, 리컴포지션이 계속 발생해도 이벤트 수집 코루틴은 단 한 번만 실행되고 유지됩니다.
+
+#### **예제: `LaunchedEffect`를 사용하는 UI**
+
+`MyViewModel`의 이벤트를 수집하고 처리하는 화면 예제입니다.
 
 ```kotlin
-// TodoScreen.kt
+// MyScreen.kt
 
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun TodoScreen(
-    viewModel: TodoViewModel = viewModel(),
-    onNavigateToNextScreen: () -> Unit
+fun MyScreen(
+    viewModel: MyViewModel = viewModel(),
+    onNavigateToDetails: () -> Unit // 내비게이션을 위한 콜백 함수
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // 3. LaunchedEffect를 사용해 ViewModel의 이벤트를 구독하고 처리
+    // LaunchedEffect를 사용해 ViewModel의 이벤트를 수집합니다.
+    // key1 = true는 이 블록이 리컴포지션에 의해 재실행되지 않고,
+    // 단 한 번만 실행되도록 보장합니다.
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is TodoEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
+                is MyScreenEvent.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(message = event.message)
                 }
-                is TodoEvent.NavigateToNextScreen -> {
-                    onNavigateToNextScreen()
+                is MyScreenEvent.NavigateToDetails -> {
+                    onNavigateToDetails()
                 }
             }
         }
@@ -192,17 +153,53 @@ fun TodoScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
-        // ... UI 컨텐츠
+        // ... 화면 컨텐츠 ...
+
+        // 예시: 이벤트를 발생시키는 버튼들
         Button(onClick = { viewModel.onSaveButtonClick() }) {
             Text("저장")
         }
-        Button(onClick = { viewModel.onGoToNextScreenClick() }) {
-            Text("다음 화면으로")
+        Button(onClick = { viewModel.onDetailsButtonClick() }) {
+            Text("상세보기")
         }
     }
 }
 ```
 
-이 예제처럼 `ViewModel`에서 발생한 이벤트를 `SharedFlow`를 통해 전달하고, Composable에서는 `LaunchedEffect`로 이벤트를 받아 스낵바를 보여주거나 화면을 이동하는 등의 UI 관련 작업을 수행하면 됩니다.
+---
 
-궁금한 점이 있다면 언제든지 다시 질문해주세요
+## 대안: `Channel` 사용하기
+
+`Channel` 또한 1회성 이벤트를 보내는 데 사용할 수 있습니다. `SharedFlow`와 달리 `Channel`로 보낸 값은 **단 하나의 구독자**만 받을 수 있습니다. 이벤트가 수신되면 채널에서 즉시 사라집니다.
+
+*   **`SharedFlow` vs `Channel`**
+    *   **`SharedFlow`**: 하나의 이벤트를 여러 구독자가 동시에 관찰해야 할 때 유용합니다 (예: UI 처리용 구독자, 분석 로그용 구독자). 일반적으로 UI 이벤트 처리에는 더 유연한 `SharedFlow`가 권장됩니다.
+    *   **`Channel`**: 이벤트가 반드시 **단 한 번, 단 하나의 구독자**에 의해서만 처리되어야 함을 보장하고 싶을 때 사용합니다. 두 번 실행되면 곤란한 화면 이동 같은 경우에 특히 유용합니다.
+
+#### **예제: `Channel`을 사용하는 ViewModel**
+
+`Channel`을 사용하려면 `receiveAsFlow()` 확장 함수를 통해 `Flow`로 변환하여 외부에 노출합니다.
+
+```kotlin
+// ChannelEventViewModel.kt
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+
+class ChannelEventViewModel : ViewModel() {
+
+    private val _eventChannel = Channel<MyScreenEvent>()
+    val eventFlow = _eventChannel.receiveAsFlow() // Flow로 변환하여 노출
+
+    fun onNavigate() {
+        viewModelScope.launch {
+            _eventChannel.send(MyScreenEvent.NavigateToDetails)
+        }
+    }
+}
+```
+
+`Channel`을 사용하더라도 UI에서 `LaunchedEffect`로 이벤트를 수신하는 코드는 동일합니다.
