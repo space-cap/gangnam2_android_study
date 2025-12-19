@@ -21,6 +21,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,135 +61,139 @@ fun SearchRecipesScreen(
 
     val recipes = state.filteredRecipes
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = AppColors.white)
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(horizontal = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        containerColor = AppColors.white,
+        ) { innerPadding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 54.dp,
-                    bottom = 17.dp,
-                )
+                .fillMaxSize()
+                .padding(innerPadding)
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(horizontal = 30.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Icon(
-                painter = painterResource(R.drawable.outline_arrow_right),
-                contentDescription = "뒤로가기 버튼",
-                modifier = Modifier
-                    .size(20.dp)
-                    .rotate(180f)
-                    .align(Alignment.CenterStart)
-                    .clickable { onAction(SearchRecipesAction.OnBackClick) }
-            )
-
-            Text(
-                text = stringResource(R.string.search_recipes_title),
-                style = AppTextStyles.mediumTextBold,
-                modifier = Modifier.padding(top = 10.dp, bottom = 17.dp),
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            SearchField(
-                query = state.searchText,
-                placeholder = "Search recipe",
-                onQueryChange = {
-                    onAction(SearchRecipesAction.OnSearchQueryChange(it))
-                },
-                onSearch = {},
-                modifier = Modifier.weight(1f)
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
             Box(
-                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-                        // viewModel.showBottomSheet()
-                        showFilterSheet = true
-
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = "필터 적용되었습니다",
-                                actionLabel = "확인",
-                                withDismissAction = true
-                            )
-                        }
-                    }
-                    .background(
-                        color = AppColors.primary100,
+                    .fillMaxWidth()
+                    .padding(
+                        top = 54.dp,
+                        bottom = 17.dp,
                     )
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_setting_4_outline),
-                    contentDescription = "setting icon",
-                    tint = AppColors.white,
-                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(R.drawable.outline_arrow_right),
+                    contentDescription = "뒤로가기 버튼",
+                    modifier = Modifier
+                        .size(20.dp)
+                        .rotate(180f)
+                        .align(Alignment.CenterStart)
+                        .clickable { onAction(SearchRecipesAction.OnBackClick) }
+                )
+
+                Text(
+                    text = stringResource(R.string.search_recipes_title),
+                    style = AppTextStyles.mediumTextBold,
+                    modifier = Modifier.padding(top = 10.dp, bottom = 17.dp),
                 )
             }
-        }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 2.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Recent Search",
-                style = AppTextStyles.mediumTextBold,
-                modifier = Modifier.padding(top = 10.dp, bottom = 20.dp),
-            )
-        }
-
-
-        // recipe items
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp)
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalArrangement = Arrangement.spacedBy(15.dp),
-                contentPadding = PaddingValues(bottom = 10.dp),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(recipes) { recipe ->
-                    RecipeCardMedium(
-                        recipe
+                SearchField(
+                    query = state.searchText,
+                    placeholder = "Search recipe",
+                    onQueryChange = {
+                        onAction(SearchRecipesAction.OnSearchQueryChange(it))
+                    },
+                    onSearch = {},
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .clickable {
+                            // viewModel.showBottomSheet()
+                            showFilterSheet = true
+
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = "필터 적용되었습니다",
+                                    actionLabel = "확인",
+                                    withDismissAction = true
+                                )
+                            }
+                        }
+                        .background(
+                            color = AppColors.primary100,
+                        )
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_setting_4_outline),
+                        contentDescription = "setting icon",
+                        tint = AppColors.white,
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             }
-        }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 2.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "Recent Search",
+                    style = AppTextStyles.mediumTextBold,
+                    modifier = Modifier.padding(top = 10.dp, bottom = 20.dp),
+                )
+            }
 
 
+            // recipe items
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+                    contentPadding = PaddingValues(bottom = 10.dp),
+                ) {
+                    items(recipes) { recipe ->
+                        RecipeCardMedium(
+                            recipe
+                        )
+                    }
+                }
+            }
 
-        // 필터 시트
-        if (showFilterSheet) {
-            FilterSearchBottomSheet(
-                onApplyFilter = { filter ->
-                    onAction(SearchRecipesAction.OnFilterClick(filter))
-                    showFilterSheet = false
-                },
-                onDismiss = { showFilterSheet = false },
-                initialFilter = state.filterSearchState,
-            )
+
+            // 필터 시트
+            if (showFilterSheet) {
+                FilterSearchBottomSheet(
+                    onApplyFilter = { filter ->
+                        onAction(SearchRecipesAction.OnFilterClick(filter))
+                        showFilterSheet = false
+                    },
+                    onDismiss = { showFilterSheet = false },
+                    initialFilter = state.filterSearchState,
+                )
+            }
         }
     }
 }
