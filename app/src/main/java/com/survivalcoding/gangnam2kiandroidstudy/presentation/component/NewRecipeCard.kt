@@ -62,8 +62,8 @@ fun NewRecipeCard(
                     horizontalArrangement = Arrangement.spacedBy(2.dp),
                 ) {
                     val rating = recipe.rating
-                    val filledStars = rating.toInt()
-                    val hasEmptyStar = rating % 1 != 0.0
+                    val filledStars = rating.toInt().coerceIn(0, 5)
+                    val hasEmptyStar = rating > filledStars && filledStars < 5
 
                     repeat(filledStars) {
                         Image(
