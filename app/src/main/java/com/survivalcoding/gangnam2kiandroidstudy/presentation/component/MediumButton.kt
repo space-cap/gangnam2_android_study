@@ -25,6 +25,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
 fun MediumButton(
     text: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onClick: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }

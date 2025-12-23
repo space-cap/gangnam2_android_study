@@ -64,7 +64,7 @@ fun SearchRecipesScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         containerColor = AppColors.white,
-        ) { innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -126,13 +126,7 @@ fun SearchRecipesScreen(
                             // viewModel.showBottomSheet()
                             showFilterSheet = true
 
-                            scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = "필터 적용되었습니다",
-                                    actionLabel = "확인",
-                                    withDismissAction = true
-                                )
-                            }
+
                         }
                         .background(
                             color = AppColors.primary100,
@@ -189,8 +183,24 @@ fun SearchRecipesScreen(
                     onApplyFilter = { filter ->
                         onAction(SearchRecipesAction.OnFilterClick(filter))
                         showFilterSheet = false
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "필터 적용되었습니다",
+                                actionLabel = "확인",
+                                withDismissAction = true
+                            )
+                        }
                     },
-                    onDismiss = { showFilterSheet = false },
+                    onDismiss = {
+                        showFilterSheet = false
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "필터 취소되었습니다",
+                                actionLabel = "확인",
+                                withDismissAction = true
+                            )
+                        }
+                    },
                     initialFilter = state.filterSearchState,
                 )
             }
