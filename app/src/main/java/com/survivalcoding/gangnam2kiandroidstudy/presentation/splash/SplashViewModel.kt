@@ -27,6 +27,7 @@ class SplashViewModel(
         checkInitialState()
     }
 
+
     /**
      * 스플래시에서 실행할 초기 로직.
      * - 네트워크 상태 확인

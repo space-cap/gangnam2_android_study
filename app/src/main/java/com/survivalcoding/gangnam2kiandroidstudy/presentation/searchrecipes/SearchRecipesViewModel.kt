@@ -58,6 +58,12 @@ class SearchRecipesViewModel(
         }
     }
 
+
+    private fun onEvent(event: SearchRecipesEvent) {
+        viewModelScope.launch { _event.emit(event) }
+    }
+
+
     fun onAction(
         action: SearchRecipesAction,
         navigateBack: () -> Unit,
