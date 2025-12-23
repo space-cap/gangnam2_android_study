@@ -59,6 +59,7 @@ class SearchRecipesViewModel(
     }
 
 
+    // TODO 다음 작업에 사용 예정
     private fun onEvent(event: SearchRecipesEvent) {
         viewModelScope.launch { _event.emit(event) }
     }
