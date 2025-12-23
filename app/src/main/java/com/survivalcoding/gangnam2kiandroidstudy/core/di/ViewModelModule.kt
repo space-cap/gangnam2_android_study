@@ -4,6 +4,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.home.HomeViewModel
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.recipedetails.RecipeDetailsViewModel
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.savedrecipes.SavedRecipesViewModel
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.searchrecipes.SearchRecipesViewModel
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.splash.SplashViewModel
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.todo.TodoViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -32,6 +33,8 @@ val viewModelModule = module {
 
     // SearchRecipesViewModel을 주입하기 위한 정의입니다.
     viewModel { SearchRecipesViewModel(get()) }
+
+    viewModel { SplashViewModel(get()) }
 
     // TodoViewModel을 주입하기 위한 정의입니다.
     // get()이 두 번 사용된 것은 TodoViewModel이 두 개의 의존성을 필요로 한다는 의미입니다.

@@ -18,7 +18,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.savedrecipes.Saved
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.searchrecipes.SearchRecipesRoot
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.signin.SignInScreen
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.signup.SignUpScreen
-import com.survivalcoding.gangnam2kiandroidstudy.presentation.splash.SplashScreen
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.splash.SplashRoot
 
 
 /**
@@ -50,7 +50,7 @@ fun NavigationRoot(
         // entryProvider는 각 라우트(경로)에 어떤 화면을 보여줄지 정의합니다.
         entryProvider = entryProvider {
             entry<Route.Splash> {
-                SplashScreen(
+                SplashRoot(
                     onClick = {
                         Log.d("NavigationRoot", "Splash -> SignIn")
                         topLevelBackStack.clear()

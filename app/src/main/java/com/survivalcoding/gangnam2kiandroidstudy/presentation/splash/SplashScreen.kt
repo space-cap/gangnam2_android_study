@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -30,17 +28,14 @@ import com.survivalcoding.gangnam2kiandroidstudy.R
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.MediumButton
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
-import com.survivalcoding.gangnam2kiandroidstudy.utils.MockNetworkChecker
 
 
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    viewModel: SplashViewModel,
+    uiState: SplashUiState = SplashUiState(),
     onClick: () -> Unit = {},
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     Box(
         modifier = modifier.fillMaxSize(),
     ) {

@@ -31,15 +31,17 @@ fun MediumButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState() // 누르는 중인지 감지
 
+    val backgroundColor = if (isPressed || !enabled) AppColors.gray4 else AppColors.primary100
+
     Button(
         onClick = onClick,
         modifier = modifier
             .size(width = 243.dp, height = 54.dp),
         shape = RoundedCornerShape(10.dp),
         interactionSource = interactionSource,
-        enabled = !isPressed,
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = AppColors.primary100,
+            containerColor = backgroundColor,
             contentColor = AppColors.white
         )
     ) {
@@ -58,5 +60,8 @@ fun MediumButton(
 @Preview(showBackground = true)
 @Composable
 fun MediumButtonPreview() {
-    MediumButton("Button")
+    MediumButton(
+        text = "Button",
+        enabled = true,
+    )
 }
