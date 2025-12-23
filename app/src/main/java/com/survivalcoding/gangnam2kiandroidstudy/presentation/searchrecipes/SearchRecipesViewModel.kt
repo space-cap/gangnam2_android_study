@@ -107,6 +107,17 @@ class SearchRecipesViewModel(
                             recipes
                         }
                     }
+
+                    // category 필터
+                    .let { recipes ->
+                        if (filter.categories.isNotEmpty() && "All" !in filter.categories) {
+                            recipes.filter { recipe ->
+                                recipe.category in filter.categories
+                            }
+                        } else {
+                            recipes
+                        }
+                    }
             }
 
         // ui 업데이트
