@@ -17,8 +17,11 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCard
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
-import kotlinx.coroutines.launch
 
 @Composable
 fun SavedRecipesScreen(
@@ -44,6 +46,9 @@ fun SavedRecipesScreen(
     // LazyColumn의 스크롤 상태를 기억
     val listState = rememberLazyListState()
 
+    // 스낵바 표시 여부를 추적하는 플래그
+    var hasShownSnackbar by remember { mutableStateOf(false) }
+
     // 스크롤 상태가 변경될 때마다 호출되는 LaunchedEffect
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo }
@@ -53,10 +58,9 @@ fun SavedRecipesScreen(
                 val totalItemCount = listState.layoutInfo.totalItemsCount
 
                 // 마지막 아이템이 보이고, 전체 아이템 수가 0이 아닐 때 SnackBar 표시
-                if (lastVisibleItemIndex != null && lastVisibleItemIndex == totalItemCount - 1 && totalItemCount > 0) {
-                    scope.launch {
-                        snackbarHostState.showSnackbar("마지막 레시피입니다.")
-                    }
+                if (!hasShownSnackbar && lastVisibleItemIndex != null && lastVisibleItemIndex == totalItemCount - 1 && totalItemCount > 0) {
+                    hasShownSnackbar = true
+                    snackbarHostState.showSnackbar("마지막 레시피입니다.")
                 }
             }
     }
