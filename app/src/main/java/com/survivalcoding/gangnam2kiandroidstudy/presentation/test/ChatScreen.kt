@@ -12,8 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 
 
-class Message(val text: String)
-
 /**
  * 메시지 목록을 보여주는 화면입니다.
  * 새로운 메시지가 추가되면 자동으로 목록의 가장 아래로 스크롤됩니다.
@@ -21,7 +19,7 @@ class Message(val text: String)
  * @param message 보여줄 메시지 목록
  */
 @Composable
-fun LaunchedEffectScreen(
+fun ChatScreen(
     message: List<Message>
 ) {
     // 자동 스크롤 여부를 저장하는 상태 변수입니다.
@@ -56,7 +54,7 @@ fun LaunchedEffectScreen(
 @Preview(showBackground = true)
 @Composable
 fun LaunchedEffectScreenPreview() {
-    LaunchedEffectScreen(
+    ChatScreen(
         // List 생성자를 사용하여 20개의 미리보기 메시지를 간결하게 생성합니다.
         message = List(20) { index -> Message("Preview ${index + 1}") }
     )
