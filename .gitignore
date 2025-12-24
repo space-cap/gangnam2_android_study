@@ -1,17 +1,63 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
+# ===================================
+#      Android / Gradle
+# ===================================
+# Build output folders
 /build
 /captures
-.externalNativeBuild
-.cxx
-local.properties
 
+# Gradle cache
+.gradle/
+
+# Generated files
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# NDK files
+/app/src/main/obj
+/app/src/main/libs
+
+
+# ===================================
+#   Local configuration & secrets
+# ===================================
+# Local properties (SDK path, secrets, etc.)
+# This file should never be in version control.
+/local.properties
+
+# Keystore files used for signing the application.
+# Store them securely and do not commit them to version control.
+*.jks
+*.keystore
+
+
+# ===================================
+#      IDE files (Android Studio)
+# ===================================
+# IntelliJ/Android Studio project files
+*.iml
+# The .idea folder contains user-specific settings.
+# It's generally a good practice to ignore the entire directory.
 .idea/
+
+
+# ===================================
+#        Miscellaneous
+# ===================================
+# Native build folders
+.externalNativeBuild/
+.cxx/
+
+# macOS specific files
+.DS_Store
+
+# Log files
+*.log
+
+# Memory snapshots
+*.hprof
+
+# Gemini clipboard
+.gemini-clipboard
