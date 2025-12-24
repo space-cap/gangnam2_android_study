@@ -39,7 +39,6 @@ fun MainScreen(
                             contentDescription = "Home",
                         )
                     },
-                    //label = { Text("Home") }
                 )
                 NavigationBarItem(
                     selected = currentRoute is Route.SavedRecipes,
@@ -55,7 +54,6 @@ fun MainScreen(
                             contentDescription = "Saved Recipes"
                         )
                     },
-                    //label = { Text("Saved") }
                 )
                 NavigationBarItem(
                     selected = currentRoute is Route.Notifications,
@@ -71,7 +69,6 @@ fun MainScreen(
                             contentDescription = "Notifications"
                         )
                     },
-                    //label = { Text("Notifications") }
                 )
                 NavigationBarItem(
                     selected = currentRoute is Route.Profile,
@@ -87,7 +84,6 @@ fun MainScreen(
                             contentDescription = "Profile"
                         )
                     },
-                    //label = { Text("Profile") }
                 )
             }
         }
