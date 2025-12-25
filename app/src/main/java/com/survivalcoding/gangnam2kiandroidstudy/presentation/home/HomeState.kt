@@ -11,4 +11,5 @@ data class HomeState(
     val newRecipes: List<Recipe> = emptyList(),
     val errorMessages: String? = "",
     val isNewRecipesLoading: Boolean = false,
+    val savedRecipeIds: Set<Int> = emptySet(), // 북마크된 레시피 ID 저장
 )

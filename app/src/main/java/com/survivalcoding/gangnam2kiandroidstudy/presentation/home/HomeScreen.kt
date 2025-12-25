@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.survivalcoding.gangnam2kiandroidstudy.R
+import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.DishCard
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.NewRecipeCard
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCategorySelector
@@ -96,14 +97,19 @@ fun HomeScreen(
 
         // dish cards
         LazyRow() {
-            items(state.filteredRecipes) { item ->
+            items(
+                state.filteredRecipes,
+                key = { it.id }
+            ) { item ->
                 DishCard(
                     recipe = item,
                     onDishClick = { recipe ->
                         onAction(HomeAction.OnRecipeClick(recipe.id))
                     },
-                    onBookmarkClick = {},
-                    isSaved = false,
+                    onBookmarkClick = { recipe ->
+                        onAction(HomeAction.OnBookmarkClick(recipe))
+                    },
+                    isSaved = state.savedRecipeIds.contains(item.id.toInt()),
                     modifier = Modifier
                         .padding(end = 15.dp)
                         .width(150.dp)
@@ -171,5 +177,29 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(
+        state = HomeState(
+            filteredRecipes = listOf(
+                Recipe(
+                    id = 1,
+                    name = "Traditional Spare Ribs",
+                    image = "https://cdn.pixabay.com/photo/2017/11/10/15/04/steak-2936531_1280.jpg",
+                    chef = "Chef John",
+                    time = "20 min",
+                    rating = 4.5,
+                    category = "Korean"
+                ),
+                Recipe(
+                    id = 2,
+                    name = "Spice Roasted Chicken",
+                    image = "https://cdn.pixabay.com/photo/2018/12/04/16/49/tandoori-3856045_1280.jpg",
+                    chef = "Chef Mark",
+                    time = "30 min",
+                    rating = 4.8,
+                    category = "Italian",
+                )
+            )
+        ),
+        onAction = {},
+    )
 }

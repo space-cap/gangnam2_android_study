@@ -40,4 +40,7 @@ val viewModelModule = module {
     // get()이 두 번 사용된 것은 TodoViewModel이 두 개의 의존성을 필요로 한다는 의미입니다.
     // Koin이 각각의 의존성을 순서에 맞게 찾아서 주입해줍니다.
     viewModel { TodoViewModel(get(), get()) }
+
+    // get()을 통해 ToggleBookmarkUseCase를 주입합니다.
+    viewModel { HomeViewModel(get()) } // 다른 의존성이 있을 경우 추가
 }

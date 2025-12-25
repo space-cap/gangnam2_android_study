@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
 import com.survivalcoding.gangnam2kiandroidstudy.domain.repository.RecipeRepository
+import com.survivalcoding.gangnam2kiandroidstudy.domain.usercase.ToggleBookmarkUseCase
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 @OptIn(FlowPreview::class)
 class HomeViewModel(
     private val recipeRepository: RecipeRepository,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState = _uiState.asStateFlow()
@@ -81,6 +83,12 @@ class HomeViewModel(
 
             is HomeAction.OnRecipeClick -> {
                 recipeClick(action.recipeId)
+            }
+
+            is HomeAction.OnBookmarkClick -> {
+                viewModelScope.launch {
+                    toggleBookmarkUseCase(action.recipe)
+                }
             }
         }
     }
