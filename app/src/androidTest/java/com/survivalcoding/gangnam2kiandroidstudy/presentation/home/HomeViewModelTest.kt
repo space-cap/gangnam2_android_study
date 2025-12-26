@@ -1,6 +1,7 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.home
 
 import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
+import com.survivalcoding.gangnam2kiandroidstudy.domain.usercase.ToggleBookmarkUseCase
 import com.survivalcoding.gangnam2kiandroidstudy.rules.MainCoroutineRule
 import com.survivalcoding.gangnam2kiandroidstudy.util.TestRecipeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,6 +21,11 @@ class HomeViewModelTest {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var recipeRepository: TestRecipeRepository
+
+    // UseCase들을 선언합니다.
+    //private lateinit var getAllRecipesUseCase: GetAllRecipesUseCase
+    private lateinit var toggleBookmarkUseCase: ToggleBookmarkUseCase
+    //private lateinit var getBookmarkedRecipeIdsUseCase: GetBookmarkedRecipeIdsUseCase
 
     private val testRecipes = listOf(
         Recipe(
@@ -54,6 +60,7 @@ class HomeViewModelTest {
     @Before
     fun setUp() {
         recipeRepository = TestRecipeRepository(testRecipes)
+        toggleBookmarkUseCase = ToggleBookmarkUseCase(recipeRepository)
     }
 
     @Test
@@ -61,7 +68,10 @@ class HomeViewModelTest {
         // Given: 테스트용 레시피 데이터가 있는 repository
 
         // When: ViewModel을 생성하면 init 블록에서 자동으로 레시피를 로드함
-        viewModel = HomeViewModel(recipeRepository)
+        viewModel = HomeViewModel(
+            recipeRepository,
+            toggleBookmarkUseCase = toggleBookmarkUseCase,
+        )
         advanceUntilIdle() // 모든 코루틴이 완료될 때까지 대기
 
         // Then: 레시피가 정상적으로 로드되고 상태가 업데이트됨
@@ -76,7 +86,10 @@ class HomeViewModelTest {
     @Test
     fun testCategoryFilter() = runTest {
         // Given: ViewModel이 초기화되고 레시피가 로드됨
-        viewModel = HomeViewModel(recipeRepository)
+        viewModel = HomeViewModel(
+            recipeRepository,
+            toggleBookmarkUseCase = toggleBookmarkUseCase,
+        )
         advanceUntilIdle()
 
         // When: 카테고리를 "Korean"으로 변경
@@ -94,7 +107,10 @@ class HomeViewModelTest {
     @Test
     fun testSearchFilter() = runTest {
         // Given: ViewModel이 초기화되고 레시피가 로드됨
-        viewModel = HomeViewModel(recipeRepository)
+        viewModel = HomeViewModel(
+            recipeRepository,
+            toggleBookmarkUseCase = toggleBookmarkUseCase,
+        )
         advanceUntilIdle()
 
         // When: 검색어를 "Pasta"로 입력
@@ -110,7 +126,10 @@ class HomeViewModelTest {
     @Test
     fun testCombinedFilter() = runTest {
         // Given: ViewModel이 초기화되고 레시피가 로드됨
-        viewModel = HomeViewModel(recipeRepository)
+        viewModel = HomeViewModel(
+            recipeRepository,
+            toggleBookmarkUseCase = toggleBookmarkUseCase,
+        )
         advanceUntilIdle()
 
         // When: 카테고리를 "Korean"으로 변경하고 검색어를 "Bulgogi"로 입력
