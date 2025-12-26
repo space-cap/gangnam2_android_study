@@ -15,8 +15,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +42,7 @@ import com.survivalcoding.gangnam2kiandroidstudy.domain.model.UnitType
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.IngredientItem
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.ProcedureItem
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeCard
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.RecipeDetailsDropdownMenu
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.SmallButton
 import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.Tabs
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
@@ -50,7 +56,10 @@ fun RecipeDetailsScreen(
     uiState: RecipeDetailsState = RecipeDetailsState(),
     onTabClick: (Int) -> Unit = {},
     onBackClick: () -> Unit = {},
+    onAction: (RecipeDetailsAction) -> Unit = {},
 ) {
+    var expanded by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -72,12 +81,39 @@ fun RecipeDetailsScreen(
                     .rotate(180f)
                     .clickable { onBackClick() },
             )
-            Icon(
-                painter = painterResource(R.drawable.outline_more),
-                contentDescription = "more icon",
-                modifier = Modifier
-                    .size(24.dp),
-            )
+            IconButton(
+                onClick = { expanded = !expanded },
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.outline_more),
+                    contentDescription = "more icon",
+                    modifier = Modifier
+                        .size(24.dp),
+                )
+            }
+
+            uiState.recipe?.let { recipe ->
+                RecipeDetailsDropdownMenu(
+                    isExpanded = uiState.isMenuVisible,
+                    isSaved = uiState.recipe.isSaved,
+                    onDismissRequest = {
+                        onAction(RecipeDetailsAction.OnMenuDismissRequest)
+                    },
+                    onShareClick = {
+                        onAction(RecipeDetailsAction.OnShareClick)
+                    },
+                    onRateClick = {
+                        onAction(RecipeDetailsAction.OnRateClick)
+                    },
+                    onReviewClick = {
+                        onAction(RecipeDetailsAction.OnReviewClick(recipe.id))
+                    },
+                    onBookmarkClick = {
+                        onAction(RecipeDetailsAction.OnBookmarkClick(recipe.id))
+                    },
+                )
+            }
+
         }
 
 

@@ -10,6 +10,8 @@ data class Recipe(
     val category: String,
     val serve: Int = 0,
     val chefImageUrl: String = "",
+    val isSaved: Boolean = false,
+    val shareUrl: String = "share_url",
     //val description: String,
     //val reviewCount: Int,
     //val ingredients: List<Ingredient>,

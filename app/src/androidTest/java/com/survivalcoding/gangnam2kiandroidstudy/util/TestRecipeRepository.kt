@@ -2,6 +2,8 @@ package com.survivalcoding.gangnam2kiandroidstudy.util
 
 import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
 import com.survivalcoding.gangnam2kiandroidstudy.domain.repository.RecipeRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 class TestRecipeRepository(private val initialRecipes: List<Recipe>) : RecipeRepository {
 
@@ -23,5 +25,14 @@ class TestRecipeRepository(private val initialRecipes: List<Recipe>) : RecipeRep
 
     override suspend fun setRecipe(recipe: Recipe) {
         // 테스트용 구현: 필요시 내부 리스트 업데이트
+    }
+
+    override suspend fun toggleBookmark(recipe: Recipe) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun getBookmarkedRecipeIds(): Flow<Set<Int>> {
+        //TODO("Not yet implemented")
+        return emptyFlow<Set<Int>>()
     }
 }
