@@ -60,4 +60,4 @@
 *.hprof
 
 # Gemini clipboard
-.gemini-clipboard
+#.gemini-clipboard

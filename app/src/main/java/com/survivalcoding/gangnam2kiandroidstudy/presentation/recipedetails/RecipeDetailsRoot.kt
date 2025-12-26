@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.survivalcoding.gangnam2kiandroidstudy.presentation.component.ShareDialog
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -40,5 +41,16 @@ fun RecipeDetailsRoot(
         onTabClick = viewModel::changeTab,
         onBackClick = onBackClick,
         onAction = viewModel::onAction,
+    )
+
+    ShareDialog(
+        isVisible = uiState.isShareDialogVisible,
+        shareUrl = uiState.recipe?.shareUrl ?: "",
+        onDismissRequest = {
+            viewModel.onAction(RecipeDetailsAction.OnShareDismissRequest)
+        },
+        onCopy = {
+            viewModel.onAction(RecipeDetailsAction.OnCopyClick(it))
+        },
     )
 }

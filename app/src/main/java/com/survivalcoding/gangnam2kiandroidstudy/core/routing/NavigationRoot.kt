@@ -3,7 +3,9 @@ package com.survivalcoding.gangnam2kiandroidstudy.core.routing
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -29,10 +31,32 @@ import com.survivalcoding.gangnam2kiandroidstudy.presentation.splash.SplashRoot
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier,
+    deepLinkUri: String? = null,
 ) {
     // rememberNavBackStack은 탐색 스택을 생성하고 기억합니다.
     // 초기 화면으로 Route.Splash을 설정합니다.
     val topLevelBackStack = rememberNavBackStack(Route.Splash)
+    val backStack = rememberNavBackStack(Route.Home)
+
+
+    LaunchedEffect(key1 = deepLinkUri) {
+        if (deepLinkUri != null) {
+            val uri = deepLinkUri.toUri()
+            if (uri.scheme == "app" && uri.host == "recipe.co") {
+                val recipeId = uri.lastPathSegment?.toIntOrNull()
+
+                if (recipeId != null) {
+                    topLevelBackStack.clear()
+                    backStack.clear()
+
+                    topLevelBackStack.add(Route.Main)
+                    backStack.add(Route.SavedRecipes)
+                    topLevelBackStack.add(Route.RecipeDetails(recipeId.toLong()))
+                }
+            }
+        }
+    }
+
 
     // NavDisplay는 현재 탐색 스택의 최상위 entry에 해당하는 화면을 표시합니다.
     NavDisplay(
@@ -104,7 +128,7 @@ fun NavigationRoot(
             }
 
             entry<Route.Main> {
-                val backStack = rememberNavBackStack(Route.Home)
+
 
                 MainScreen(
                     backStack = backStack,

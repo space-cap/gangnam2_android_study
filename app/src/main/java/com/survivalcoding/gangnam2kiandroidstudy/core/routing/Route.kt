@@ -34,6 +34,9 @@ sealed interface Route : NavKey {
     @Serializable
     data class RecipeDetails(val recipeId: Long) : Route
 
+
+
+
     // companion object: Route와 관련된 추가적인 정보를 담는 공간입니다.
     companion object Companion {
         // allRoutes 라는 목록을 만들고, 하단 탭 바에 표시될 화면들(Home, SavedRecipes 등)을 담아두었습니다.

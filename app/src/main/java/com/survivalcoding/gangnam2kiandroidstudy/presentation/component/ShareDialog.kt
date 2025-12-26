@@ -16,15 +16,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppColors
 import com.survivalcoding.gangnam2kiandroidstudy.ui.AppTextStyles
+
 
 @Composable
 fun ShareDialog(
@@ -44,6 +47,11 @@ fun ShareDialog(
     if (!isVisible) {
         return
     }
+
+    val clipboardManager = LocalClipboardManager.current
+
+    // 코루틴 스코프를 생성합니다.
+    val scope = rememberCoroutineScope()
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -92,6 +100,9 @@ fun ShareDialog(
                         text = "Copy Link",
                         modifier = Modifier.width(85.dp),
                     ) {
+                        // 코루틴 없이 직접 호출합니다.
+                        clipboardManager.setText(AnnotatedString(shareUrl))
+
                         onCopy(shareUrl)
                         onDismissRequest()
                     }
@@ -145,7 +156,7 @@ fun CopyLinkButton(
     ) {
         Text(
             text = text,
-            style = AppTextStyles.smallTextBold.copy(color = AppColors.white),
+            style = AppTextStyles.smallerTextBold.copy(color = AppColors.white),
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 12.dp),
         )
     }
@@ -156,6 +167,6 @@ fun CopyLinkButton(
 private fun ShareDialogPreview() {
     ShareDialog(
         isVisible = true,
-        shareUrl = "share_url",
+        shareUrl = "app.Recipe.co/jollof_rice",
     )
 }
