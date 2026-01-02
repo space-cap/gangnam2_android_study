@@ -30,6 +30,17 @@ jobs:
           --max-workers=2
           -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
+      # 결과 보고서 업로드 (테스트 결과 + 린트 결과)
+      - name: Upload Reports
+        if: always() # 빌드가 실패하더라도 리포트는 확인할 수 있도록 설정
+        uses: actions/upload-artifact@v4
+        with:
+          name: analysis-reports
+          path: |
+            **/build/reports/tests/
+            **/build/reports/lint-results*.html
+            **/build/reports/lint-results*.xml
+
       # 빌드된 'dev-debug' APK 하나만 업로드합니다.
       - name: Upload dev-debug APK
         uses: actions/upload-artifact@v4 # v3 대신 최신 v4 사용 권장
