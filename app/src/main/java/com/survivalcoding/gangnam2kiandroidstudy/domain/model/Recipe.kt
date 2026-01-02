@@ -12,7 +12,7 @@ data class Recipe(
     val chefImageUrl: String = "",
     val isSaved: Boolean = false,
     val shareUrl: String = "share_url",
-    var isBookmarked: Boolean = false,
+    val isBookmarked: Boolean = false,
     //val description: String,
     //val reviewCount: Int,
     //val ingredients: List<Ingredient>,

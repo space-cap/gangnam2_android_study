@@ -31,12 +31,10 @@ class GetSavedRecipesUseCase(
         // .first()를 사용하여 현재 시점의 북마크 목록만 가져옵니다. 이렇게 하지 않으면 collect가 끝나지 않아 함수가 반환되지 않을 수 있습니다.
         val bookmarkedRecipeIds = bookmarkRepository.getBookmarkedRecipeIds().first()
 
-        // 3. 각 레시피를 순회하며 북마크 상태를 확인하고 설정합니다.
-        savedRecipes.forEach { recipe ->
-            recipe.isBookmarked = bookmarkedRecipeIds.contains(recipe.id)
+        // 3. 각 레시피를 순회하며 북마크 상태가 업데이트된 새 리스트를 생성합니다.
+        return savedRecipes.map { recipe ->
+            // 4. 북마크 목록에 현재 레시피 ID가 포함되어 있는지 확인하여 isBookmarked 값을 설정한 복사본을 반환합니다.
+            recipe.copy(isBookmarked = bookmarkedRecipeIds.contains(recipe.id))
         }
-
-        // 4. 북마크 상태가 업데이트된 레시피 목록을 반환합니다.
-        return savedRecipes
     }
 }
