@@ -11,7 +11,13 @@ class BookmarkRepositoryImpl(
 ) : BookmarkRepository {
     override suspend fun toggleBookmark(recipeId: Long): Boolean {
         Log.d("BookmarkRepository", "Toggled bookmark for recipeId: $recipeId")
-        return true
+        val isCurrentlyBookmarked = isBookmarked(recipeId)
+        if (isCurrentlyBookmarked) {
+            removeBookmark(recipeId)
+        } else {
+            addBookmark(recipeId)
+        }
+        return !isCurrentlyBookmarked
     }
 
     override suspend fun addBookmark(recipeId: Long) {
