@@ -26,6 +26,9 @@ jobs:
       # 빌드 명령어를 구체화하여 속도 향상
       - name: Build debug APK
         run: ./gradlew assembleDevDebug
+          --no-daemon
+          --max-workers=2
+          -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=512m"
 
       # 빌드된 'dev-debug' APK 하나만 업로드합니다.
       - name: Upload dev-debug APK
