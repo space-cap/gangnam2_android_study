@@ -25,6 +25,12 @@ class SplashViewModel(
     init {
         // ViewModel 생성 시 스플래시 초기 로직 실행
         checkInitialState()
+        retrieveAndLogFcmToken()
+    }
+
+
+    private fun retrieveAndLogFcmToken() {
+
     }
 
 
