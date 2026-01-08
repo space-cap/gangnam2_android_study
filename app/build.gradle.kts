@@ -112,6 +112,8 @@ dependencies {
     implementation("io.insert-koin:koin-android")
     implementation("io.insert-koin:koin-androidx-compose")
     implementation("io.insert-koin:koin-compose-navigation3:4.2.0-beta2")
+    androidTestImplementation("io.insert-koin:koin-test")
+    androidTestImplementation("io.insert-koin:koin-test-junit4")
 
 
     val room_version = "2.8.4"

@@ -1,7 +1,9 @@
 package com.survivalcoding.gangnam2kiandroidstudy.data.repository
 
 import android.content.Context
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.survivalcoding.gangnam2kiandroidstudy.data.database.AppDatabase
 import com.survivalcoding.gangnam2kiandroidstudy.data.datasource.RecipeDataSourceImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
@@ -10,10 +12,15 @@ import org.junit.Test
 class RecipeRepositoryImplTest {
     @Test
     fun getRecipes() = runTest {
+        val context = ApplicationProvider.getApplicationContext<Context>()
         val dataSource = RecipeDataSourceImpl(
-            context = ApplicationProvider.getApplicationContext<Context>()
+            context = context
         )
-        val repository = RecipeRepositoryImpl(dataSource)
+
+        val db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+        val bookmarkRepository = BookmarkRepositoryImpl(db.bookmarkDao())
+
+        val repository = RecipeRepositoryImpl(dataSource, bookmarkRepository)
 
         // when
         val recipes = repository.getRecipes()
