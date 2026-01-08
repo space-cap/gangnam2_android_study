@@ -17,6 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gangnam2kiAndroidStudy">
+
+        <provider
+            android:name=".data.provider.BookmarkContentProvider"
+            android:authorities="com.survivalcoding.gangnam2kiandroidstudy.provider"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.survivalcoding.gangnam2kiandroidstudy.provider.READ_DATA" />
+
         <activity
             android:name=".LeeActivity"
             android:exported="true"

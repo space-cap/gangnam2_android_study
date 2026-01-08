@@ -1,5 +1,6 @@
 package com.survivalcoding.gangnam2kiandroidstudy.data.dao
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -19,4 +20,18 @@ interface BookmarkDao {
 
     @Query("SELECT EXISTS (SELECT 1 FROM bookmark WHERE recipeId = :recipeId)")
     suspend fun isBookmarked(recipeId: Long): Boolean
+
+    /**
+     * ContentProvider를 위해 모든 북마크 데이터를 Cursor 형태로 조회합니다.
+     */
+    @Query("SELECT * FROM bookmark")
+    fun selectAllCursor(): Cursor
+
+    /**
+     * ContentProvider를 위해 특정 ID의 북마크를 Cursor 형태로 조회합니다.
+     * @param id 조회할 북마크의 ID
+     * @return 해당 북마크 데이터를 담은 Cursor
+     */
+    @Query("SELECT * FROM bookmark WHERE recipeId = :id")
+    fun selectByIdCursor(id: Long): Cursor
 }
