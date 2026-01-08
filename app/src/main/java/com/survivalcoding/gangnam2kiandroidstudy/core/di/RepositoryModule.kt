@@ -25,7 +25,7 @@ val repositoryModule = module {
     // RecipeRepository 인터페이스를 요청하면 RecipeRepositoryImpl 구현체를 제공하라고 Koin에게 알려줍니다.
     // <RecipeRepository>는 요청할 때 사용할 타입(인터페이스), { RecipeRepositoryImpl(get()) }는 실제로 생성할 객체(구현 클래스)입니다.
     // get() 함수는 RecipeRepositoryImpl이 필요로 하는 다른 의존성(예: ApiService, Dao)을 Koin이 자동으로 주입해주도록 요청합니다.
-    single<RecipeRepository> { RecipeRepositoryImpl(get()) }
+    single<RecipeRepository> { RecipeRepositoryImpl(get(), get()) }
 
     // BookmarkRepository 인터페이스를 요청하면 BookmarkRepositoryImpl 구현체를 싱글톤으로 제공합니다.
     // 이 구현체는 생성자에서 BookmarkDao를 의존성으로 주입받습니다.

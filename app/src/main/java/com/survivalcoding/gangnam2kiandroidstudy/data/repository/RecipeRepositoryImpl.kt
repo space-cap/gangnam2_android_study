@@ -4,12 +4,14 @@ import android.util.Log
 import com.survivalcoding.gangnam2kiandroidstudy.data.datasource.RecipeDataSource
 import com.survivalcoding.gangnam2kiandroidstudy.data.mapper.toRecipe
 import com.survivalcoding.gangnam2kiandroidstudy.domain.model.Recipe
+import com.survivalcoding.gangnam2kiandroidstudy.domain.repository.BookmarkRepository
 import com.survivalcoding.gangnam2kiandroidstudy.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 class RecipeRepositoryImpl(
-    private val dataSource: RecipeDataSource
+    private val dataSource: RecipeDataSource,
+    private val bookmarkRepository: BookmarkRepository,
 ) : RecipeRepository {
     override suspend fun getRecipes(): List<Recipe> {
         return dataSource.getRecipes().recipes?.map { it.toRecipe() } ?: emptyList()
@@ -24,7 +26,7 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun isRecipeSaved(recipeId: Long): Boolean {
-        return getSavedRecipes().any { it.id == recipeId }
+        return bookmarkRepository.isBookmarked(recipeId)
     }
 
     override suspend fun setRecipe(recipe: Recipe) {
@@ -34,8 +36,8 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun toggleBookmark(recipe: Recipe) {
-        // TODO: 로컬 저장소(Room DB 등)에 레시피 북마크 상태 변경 구현 필요
-
+        Log.d("RecipeRepositoryImpl", "Toggling bookmark for recipeId: ${recipe.id}")
+        bookmarkRepository.toggleBookmark(recipe.id)
     }
 
     override fun getBookmarkedRecipeIds(): Flow<Set<Int>> {

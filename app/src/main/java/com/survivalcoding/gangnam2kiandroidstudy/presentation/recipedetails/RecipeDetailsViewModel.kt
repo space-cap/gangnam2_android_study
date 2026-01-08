@@ -1,5 +1,6 @@
 package com.survivalcoding.gangnam2kiandroidstudy.presentation.recipedetails
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.gangnam2kiandroidstudy.domain.usercase.GetRecipeDetailsUseCase
@@ -58,9 +59,11 @@ class RecipeDetailsViewModel(
                 // 북마크 클릭 동작 구현
                 viewModelScope.launch {
                     _uiState.value.recipe?.let { currentRecipe ->
+                        val newState = !currentRecipe.isSaved
+                        Log.d("RecipeDetailsVM", "Bookmark toggled for recipeId: ${currentRecipe.id}. New state: $newState")
                         toggleBookmarkUseCase(currentRecipe)
                         _uiState.update {
-                            it.copy(recipe = currentRecipe.copy(isSaved = !currentRecipe.isSaved))
+                            it.copy(recipe = currentRecipe.copy(isSaved = newState))
                         }
                     }
                 }
