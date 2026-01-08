@@ -26,7 +26,7 @@ val viewModelModule = module {
 
     // RecipeDetailsViewModel을 주입하기 위한 정의입니다.
     // get()을 통해 필요한 의존성을 자동으로 주입받습니다.
-    viewModel { RecipeDetailsViewModel(get()) }
+    viewModel { RecipeDetailsViewModel(get(), get()) }
 
     // SavedRecipesViewModel을 주입하기 위한 정의입니다.
     viewModel { SavedRecipesViewModel(get()) }

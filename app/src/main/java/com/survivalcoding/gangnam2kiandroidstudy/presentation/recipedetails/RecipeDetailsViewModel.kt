@@ -3,6 +3,7 @@ package com.survivalcoding.gangnam2kiandroidstudy.presentation.recipedetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.gangnam2kiandroidstudy.domain.usercase.GetRecipeDetailsUseCase
+import com.survivalcoding.gangnam2kiandroidstudy.domain.usercase.ToggleBookmarkUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 
 class RecipeDetailsViewModel(
     private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
     recipeDetailsState: RecipeDetailsState = RecipeDetailsState(),
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<RecipeDetailsState> =
@@ -54,6 +56,14 @@ class RecipeDetailsViewModel(
             }
             is RecipeDetailsAction.OnBookmarkClick -> {
                 // 북마크 클릭 동작 구현
+                viewModelScope.launch {
+                    _uiState.value.recipe?.let { currentRecipe ->
+                        toggleBookmarkUseCase(currentRecipe)
+                        _uiState.update {
+                            it.copy(recipe = currentRecipe.copy(isSaved = !currentRecipe.isSaved))
+                        }
+                    }
+                }
             }
         }
     }
