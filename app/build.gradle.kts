@@ -90,6 +90,10 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.junit.ktx)
 
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.cardview) // 최신 버전
+
     testImplementation(libs.junit)
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     androidTestImplementation(libs.androidx.junit)
